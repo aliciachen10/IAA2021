@@ -1,0 +1,43 @@
+Lab #4:
+
+Question 1
+-----
+proc sql;
+select 'Total Paid to All Female Sales Representatives', sum(Salary), count(*) as total
+ from jupiter.salesstaff
+ where gender='F' and Job_Title like '%Rep%'
+union
+select 'Total Paid to All Male Sales Representatives', sum(Salary), count(*) as total 
+ from jupiter.salesstaff
+ where gender='M' and Job_Title like '%Rep%';
+quit;
+
+Question 2
+-----
+proc sql;
+	select Employee_ID
+ 	from jupiter.employee_phones
+	except
+	select Employee_ID
+ 	from jupiter.employee_addresses
+	order by employee_ID;
+quit;
+
+
+Question 3
+-----
+select id
+from practice.movies
+except
+select movie_id
+from practice.people_movies
+order by movie_id
+
+Question 4
+-----
+select count(*)
+from (select id
+from practice.movies
+except
+select movie_id
+from practice.people_movies)

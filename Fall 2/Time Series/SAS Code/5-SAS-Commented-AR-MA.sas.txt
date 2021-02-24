@@ -1,0 +1,35 @@
+/*-----------------------------*/
+/*     Autoregressive Models   */
+/*                             */
+/*        Dr  Simmons          */
+/*-----------------------------*/
+
+* Create a library to access the data sets; 
+libname time 'Q:\My Drive\Fall 2017 - Time Series\Data';
+run;
+
+/* BUILDING AN AUTOREGRESSIVE MODEL -------- */
+
+* Fit an AR2 model; 
+proc arima data=Time.AR2 plot=all;
+	identify var=y nlag=10;
+	estimate p=2 method=ML;
+run;
+quit;
+
+* Add another estimate statement; 
+proc arima data=Time.AR2 plot=all;
+	identify var=y nlag=10;
+	estimate p=(2) method=ML;
+	estimate p=(1,2,4) method=ML;
+run;
+quit;
+
+
+/* BUILDING A MOVING AVERAGE MODEL ---------- */
+
+proc arima data=Time.sim_ma1;
+	identify var=y;
+	estimate q=1 method=ML;
+run;
+quit;

@@ -1,0 +1,34 @@
+/*-----------------------------*/
+/*    Correlation Functions    */
+/*       ACF, PACF, IACF       */
+/*                             */
+/*        Dr Susan Simmons     */
+/*-----------------------------*/
+
+* Create library for data sets; 
+libname time 'Q:\My Drive\Fall 2017 - Time Series\Data';
+run;
+
+/* CORRELATION FUNCTIONS ---------------- */
+
+/*Notice no model statement! */
+proc arima data=Time.Steel plot(unpack)=all;
+	identify var=steelshp nlag=10 outcov=Corr;
+	estimate method=ML;
+run;
+quit;
+
+/* DATA ANALYSIS: US AIRLINES ----------- */
+
+* Plot the US Airlines data set; 
+proc sgplot data=Time.USAirlines;
+	series x=Date y=Passengers;
+	title 'United States Airlines Passengers';
+run;
+
+* calculate the correlation functions; 
+proc arima data=Time.USAirlines plot(unpack)=all;
+	identify var=Passengers nlag=40;
+	estimate method=ML;
+run;
+quit;

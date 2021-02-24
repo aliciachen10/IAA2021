@@ -1,0 +1,35 @@
+Lab #2:
+
+Question 1
+-----
+proc sql;
+	select employee_name, int(('1SEP2018'd - Employee_Hire_Date)/365.25) as YOS
+	from jupiter.employee_addresses a, jupiter.employee_payroll p
+	where a.employee_id = p.employee_id ;
+quit;
+
+
+Question 2
+-----
+proc sql;
+	select p.product_id, p.product_name, sum(quantity) as Total_Sold
+	from jupiter.product_dim p, jupiter.order_fact o
+	where p.product_id = o.product_id and year(Order_Date) >= 2010 and Product_Name = 'Smasher Shorts'
+	group by 1,2
+	order by 3 desc, 2;
+quit;
+
+Question 3
+-----
+select p.name, m.movie_name
+from practice.people p, practice.people_movies pm, practice.movies m
+where p.id=pm.person_id and pm.movie_id=m.id
+order by 1;
+
+Question 4
+-----
+select p.name, count(*) as count_movies
+from practice.people p, practice.people_movies pm
+where p.id=pm.person_id 
+group by 1
+order by 2 desc;

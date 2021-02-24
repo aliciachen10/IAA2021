@@ -1,0 +1,32 @@
+Lab #1:
+
+Question 1
+-----
+proc sql;
+	select distinct city
+	from jupiter.employee_addresses 
+	order by city desc;
+quit;
+
+
+Question 2
+-----
+proc sql;
+	select Employee_ID, Recipients, Qtr1
+	from jupiter.employee_donations
+	where Qtr1 > 20
+	order by Qtr1 desc;
+quit;
+
+Question 3
+-----
+select count(*)
+from exercise.education_levels;
+
+Question 4
+-----
+select country_id, count(*) as count
+from exercise.records
+group by country_id
+order by 2 desc;
+

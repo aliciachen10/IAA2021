@@ -1,0 +1,64 @@
+Lab #3:
+
+Question 1a
+-----
+proc sql;
+	select AVG(Total_Retail_Price)
+	from jupiter.order_fact
+	where order_type=1;
+quit;
+
+
+Question 1b
+-----
+proc sql;
+	select Customer_ID, AVG(Total_Retail_Price) as MeanPrice
+	from jupiter.order_fact
+	where order_type=1
+	group by 1
+	having MeanPrice > (select AVG(Total_Retail_Price)
+	from jupiter.order_fact
+	where order_type=1)
+	order by 2 desc;
+quit;
+
+Question 2a
+-----
+proc sql;
+	select Employee_ID
+	from jupiter.employee_payroll
+	where month(Employee_Hire_Date)=9
+	order by Employee_ID;
+quit;
+
+Question 2b
+-----
+
+proc sql;
+	select Employee_ID,Employee_Name
+	from jupiter.employee_addresses
+	where Employee_ID in
+	 	(select Employee_ID
+		from jupiter.employee_payroll
+		where month(Employee_Hire_Date)=9)
+	order by Employee_Name;
+quit;
+
+Question 3
+-----
+select movie_name 
+from practice.movies 
+where genre_id NOT IN (select id from practice.genres where genre in ('Comedy','Comedy/Drama','Exercise','Fantasy','Foreign','Animation','Horror','TV Classics','VAR','War'))
+order by movie_name desc;
+
+Question 4
+-----
+select p.name 
+from practice.people p, practice.people_movies pm 
+where p.id=pm.person_id and movie_id IN ('20372','8727','31670')
+order by p.name;
+
+
+
+
+

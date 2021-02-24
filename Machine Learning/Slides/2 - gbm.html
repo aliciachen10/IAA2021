@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 12 Gradient Boosting | Hands-On Machine Learning with R</title>
+  <meta name="description" content="A Machine Learning Algorithmic Deep Dive Using R." />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 12 Gradient Boosting | Hands-On Machine Learning with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="A Machine Learning Algorithmic Deep Dive Using R." />
+  <meta name="github-repo" content="bradleyboehmke/hands-on-machine-learning-with-r" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 Gradient Boosting | Hands-On Machine Learning with R" />
+  
+  <meta name="twitter:description" content="A Machine Learning Algorithmic Deep Dive Using R." />
+  
+
+<meta name="author" content="Bradley Boehmke &amp; Brandon Greenwell" />
+
+
+<meta name="date" content="2020-02-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="random-forest.html">
+<link rel="next" href="deep-learning.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="extra.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Hands-on Machine Learning with R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#who-should-read-this"><i class="fa fa-check"></i>Who should read this</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#why-r"><i class="fa fa-check"></i>Why R</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#conventions-used-in-this-book"><i class="fa fa-check"></i>Conventions used in this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#additional-resources"><i class="fa fa-check"></i>Additional resources</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#feedback"><i class="fa fa-check"></i>Feedback</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#software-information"><i class="fa fa-check"></i>Software information</a></li>
+</ul></li>
+<li class="part"><span><b>I Fundamentals</b></span></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction to Machine Learning</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#supervised-learning"><i class="fa fa-check"></i><b>1.1</b> Supervised learning</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="intro.html"><a href="intro.html#regression-problems"><i class="fa fa-check"></i><b>1.1.1</b> Regression problems</a></li>
+<li class="chapter" data-level="1.1.2" data-path="intro.html"><a href="intro.html#classification-problems"><i class="fa fa-check"></i><b>1.1.2</b> Classification problems</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#unsupervised-learning"><i class="fa fa-check"></i><b>1.2</b> Unsupervised learning</a></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#roadmap"><i class="fa fa-check"></i><b>1.3</b> Roadmap</a></li>
+<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#data"><i class="fa fa-check"></i><b>1.4</b> The data sets</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="process.html"><a href="process.html"><i class="fa fa-check"></i><b>2</b> Modeling Process</a><ul>
+<li class="chapter" data-level="2.1" data-path="process.html"><a href="process.html#prerequisites"><i class="fa fa-check"></i><b>2.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2.2" data-path="process.html"><a href="process.html#splitting"><i class="fa fa-check"></i><b>2.2</b> Data splitting</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="process.html"><a href="process.html#simple-random-sampling"><i class="fa fa-check"></i><b>2.2.1</b> Simple random sampling</a></li>
+<li class="chapter" data-level="2.2.2" data-path="process.html"><a href="process.html#stratified"><i class="fa fa-check"></i><b>2.2.2</b> Stratified sampling</a></li>
+<li class="chapter" data-level="2.2.3" data-path="process.html"><a href="process.html#class-imbalances"><i class="fa fa-check"></i><b>2.2.3</b> Class imbalances</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="process.html"><a href="process.html#creating-models-in-r"><i class="fa fa-check"></i><b>2.3</b> Creating models in R</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="process.html"><a href="process.html#many-formula-interfaces"><i class="fa fa-check"></i><b>2.3.1</b> Many formula interfaces</a></li>
+<li class="chapter" data-level="2.3.2" data-path="process.html"><a href="process.html#many-engines"><i class="fa fa-check"></i><b>2.3.2</b> Many engines</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="process.html"><a href="process.html#resampling"><i class="fa fa-check"></i><b>2.4</b> Resampling methods</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="process.html"><a href="process.html#k-fold-cross-validation"><i class="fa fa-check"></i><b>2.4.1</b> <em>k</em>-fold cross validation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="process.html"><a href="process.html#bootstrapping"><i class="fa fa-check"></i><b>2.4.2</b> Bootstrapping</a></li>
+<li class="chapter" data-level="2.4.3" data-path="process.html"><a href="process.html#alternatives"><i class="fa fa-check"></i><b>2.4.3</b> Alternatives</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="process.html"><a href="process.html#bias-var"><i class="fa fa-check"></i><b>2.5</b> Bias variance trade-off</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="process.html"><a href="process.html#bias"><i class="fa fa-check"></i><b>2.5.1</b> Bias</a></li>
+<li class="chapter" data-level="2.5.2" data-path="process.html"><a href="process.html#variance"><i class="fa fa-check"></i><b>2.5.2</b> Variance</a></li>
+<li class="chapter" data-level="2.5.3" data-path="process.html"><a href="process.html#tune-overfit"><i class="fa fa-check"></i><b>2.5.3</b> Hyperparameter tuning</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="process.html"><a href="process.html#model-eval"><i class="fa fa-check"></i><b>2.6</b> Model evaluation</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="process.html"><a href="process.html#regression-models"><i class="fa fa-check"></i><b>2.6.1</b> Regression models</a></li>
+<li class="chapter" data-level="2.6.2" data-path="process.html"><a href="process.html#classification-models"><i class="fa fa-check"></i><b>2.6.2</b> Classification models</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="process.html"><a href="process.html#put-process-together"><i class="fa fa-check"></i><b>2.7</b> Putting the processes together</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="engineering.html"><a href="engineering.html"><i class="fa fa-check"></i><b>3</b> Feature &amp; Target Engineering</a><ul>
+<li class="chapter" data-level="3.1" data-path="engineering.html"><a href="engineering.html#prerequisites-1"><i class="fa fa-check"></i><b>3.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="3.2" data-path="engineering.html"><a href="engineering.html#target-engineering"><i class="fa fa-check"></i><b>3.2</b> Target engineering</a></li>
+<li class="chapter" data-level="3.3" data-path="engineering.html"><a href="engineering.html#dealing-with-missingness"><i class="fa fa-check"></i><b>3.3</b> Dealing with missingness</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="engineering.html"><a href="engineering.html#visualizing-missing-values"><i class="fa fa-check"></i><b>3.3.1</b> Visualizing missing values</a></li>
+<li class="chapter" data-level="3.3.2" data-path="engineering.html"><a href="engineering.html#impute"><i class="fa fa-check"></i><b>3.3.2</b> Imputation</a><ul>
+<li class="chapter" data-level="3.3.2.1" data-path="engineering.html"><a href="engineering.html#estimated-statistic"><i class="fa fa-check"></i><b>3.3.2.1</b> Estimated statistic</a></li>
+<li class="chapter" data-level="3.3.2.2" data-path="engineering.html"><a href="engineering.html#k-nearest-neighbor"><i class="fa fa-check"></i><b>3.3.2.2</b> <em>K</em>-nearest neighbor</a></li>
+<li class="chapter" data-level="3.3.2.3" data-path="engineering.html"><a href="engineering.html#tree-based"><i class="fa fa-check"></i><b>3.3.2.3</b> Tree-based</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="engineering.html"><a href="engineering.html#feature-filtering"><i class="fa fa-check"></i><b>3.4</b> Feature filtering</a></li>
+<li class="chapter" data-level="3.5" data-path="engineering.html"><a href="engineering.html#numeric-feature-engineering"><i class="fa fa-check"></i><b>3.5</b> Numeric feature engineering</a><ul>
+<li class="chapter" data-level="3.5.1" data-path="engineering.html"><a href="engineering.html#skewness"><i class="fa fa-check"></i><b>3.5.1</b> Skewness</a></li>
+<li class="chapter" data-level="3.5.2" data-path="engineering.html"><a href="engineering.html#standardization"><i class="fa fa-check"></i><b>3.5.2</b> Standardization</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="engineering.html"><a href="engineering.html#categorical-feature-engineering"><i class="fa fa-check"></i><b>3.6</b> Categorical feature engineering</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="engineering.html"><a href="engineering.html#lumping"><i class="fa fa-check"></i><b>3.6.1</b> Lumping</a></li>
+<li class="chapter" data-level="3.6.2" data-path="engineering.html"><a href="engineering.html#one-hot-dummy-encoding"><i class="fa fa-check"></i><b>3.6.2</b> One-hot &amp; dummy encoding</a></li>
+<li class="chapter" data-level="3.6.3" data-path="engineering.html"><a href="engineering.html#label-encoding"><i class="fa fa-check"></i><b>3.6.3</b> Label encoding</a></li>
+<li class="chapter" data-level="3.6.4" data-path="engineering.html"><a href="engineering.html#alternatives-1"><i class="fa fa-check"></i><b>3.6.4</b> Alternatives</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="engineering.html"><a href="engineering.html#feature-reduction"><i class="fa fa-check"></i><b>3.7</b> Dimension reduction</a></li>
+<li class="chapter" data-level="3.8" data-path="engineering.html"><a href="engineering.html#proper-implementation"><i class="fa fa-check"></i><b>3.8</b> Proper implementation</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="engineering.html"><a href="engineering.html#sequential-steps"><i class="fa fa-check"></i><b>3.8.1</b> Sequential steps</a></li>
+<li class="chapter" data-level="3.8.2" data-path="engineering.html"><a href="engineering.html#data-leakage"><i class="fa fa-check"></i><b>3.8.2</b> Data leakage</a></li>
+<li class="chapter" data-level="3.8.3" data-path="engineering.html"><a href="engineering.html#engineering-process-example"><i class="fa fa-check"></i><b>3.8.3</b> Putting the process together</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>II Supervised Learning</b></span></li>
+<li class="chapter" data-level="4" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>4</b> Linear Regression</a><ul>
+<li class="chapter" data-level="4.1" data-path="linear-regression.html"><a href="linear-regression.html#prerequisites-2"><i class="fa fa-check"></i><b>4.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="4.2" data-path="linear-regression.html"><a href="linear-regression.html#simple-linear-regression"><i class="fa fa-check"></i><b>4.2</b> Simple linear regression</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="linear-regression.html"><a href="linear-regression.html#estimation"><i class="fa fa-check"></i><b>4.2.1</b> Estimation</a></li>
+<li class="chapter" data-level="4.2.2" data-path="linear-regression.html"><a href="linear-regression.html#inference"><i class="fa fa-check"></i><b>4.2.2</b> Inference</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="linear-regression.html"><a href="linear-regression.html#multi-lm"><i class="fa fa-check"></i><b>4.3</b> Multiple linear regression</a></li>
+<li class="chapter" data-level="4.4" data-path="linear-regression.html"><a href="linear-regression.html#assessing-model-accuracy"><i class="fa fa-check"></i><b>4.4</b> Assessing model accuracy</a></li>
+<li class="chapter" data-level="4.5" data-path="linear-regression.html"><a href="linear-regression.html#lm-residuals"><i class="fa fa-check"></i><b>4.5</b> Model concerns</a></li>
+<li class="chapter" data-level="4.6" data-path="linear-regression.html"><a href="linear-regression.html#PCR"><i class="fa fa-check"></i><b>4.6</b> Principal component regression</a></li>
+<li class="chapter" data-level="4.7" data-path="linear-regression.html"><a href="linear-regression.html#partial-least-squares"><i class="fa fa-check"></i><b>4.7</b> Partial least squares</a></li>
+<li class="chapter" data-level="4.8" data-path="linear-regression.html"><a href="linear-regression.html#lm-model-interp"><i class="fa fa-check"></i><b>4.8</b> Feature interpretation</a></li>
+<li class="chapter" data-level="4.9" data-path="linear-regression.html"><a href="linear-regression.html#final-thoughts"><i class="fa fa-check"></i><b>4.9</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="logistic-regression.html"><a href="logistic-regression.html"><i class="fa fa-check"></i><b>5</b> Logistic Regression</a><ul>
+<li class="chapter" data-level="5.1" data-path="logistic-regression.html"><a href="logistic-regression.html#prerequisites-3"><i class="fa fa-check"></i><b>5.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="5.2" data-path="logistic-regression.html"><a href="logistic-regression.html#why-logistic-regression"><i class="fa fa-check"></i><b>5.2</b> Why logistic regression</a></li>
+<li class="chapter" data-level="5.3" data-path="logistic-regression.html"><a href="logistic-regression.html#simple-logistic-regression"><i class="fa fa-check"></i><b>5.3</b> Simple logistic regression</a></li>
+<li class="chapter" data-level="5.4" data-path="logistic-regression.html"><a href="logistic-regression.html#multiple-logistic-regression"><i class="fa fa-check"></i><b>5.4</b> Multiple logistic regression</a></li>
+<li class="chapter" data-level="5.5" data-path="logistic-regression.html"><a href="logistic-regression.html#assessing-model-accuracy-1"><i class="fa fa-check"></i><b>5.5</b> Assessing model accuracy</a></li>
+<li class="chapter" data-level="5.6" data-path="logistic-regression.html"><a href="logistic-regression.html#glm-residuals"><i class="fa fa-check"></i><b>5.6</b> Model concerns</a></li>
+<li class="chapter" data-level="5.7" data-path="logistic-regression.html"><a href="logistic-regression.html#feature-interpretation"><i class="fa fa-check"></i><b>5.7</b> Feature interpretation</a></li>
+<li class="chapter" data-level="5.8" data-path="logistic-regression.html"><a href="logistic-regression.html#final-thoughts-1"><i class="fa fa-check"></i><b>5.8</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="regularized-regression.html"><a href="regularized-regression.html"><i class="fa fa-check"></i><b>6</b> Regularized Regression</a><ul>
+<li class="chapter" data-level="6.1" data-path="regularized-regression.html"><a href="regularized-regression.html#prerequisites-4"><i class="fa fa-check"></i><b>6.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="6.2" data-path="regularized-regression.html"><a href="regularized-regression.html#why"><i class="fa fa-check"></i><b>6.2</b> Why regularize?</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="regularized-regression.html"><a href="regularized-regression.html#ridge"><i class="fa fa-check"></i><b>6.2.1</b> Ridge penalty</a></li>
+<li class="chapter" data-level="6.2.2" data-path="regularized-regression.html"><a href="regularized-regression.html#lasso"><i class="fa fa-check"></i><b>6.2.2</b> Lasso penalty</a></li>
+<li class="chapter" data-level="6.2.3" data-path="regularized-regression.html"><a href="regularized-regression.html#elastic"><i class="fa fa-check"></i><b>6.2.3</b> Elastic nets</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="regularized-regression.html"><a href="regularized-regression.html#implementation"><i class="fa fa-check"></i><b>6.3</b> Implementation</a></li>
+<li class="chapter" data-level="6.4" data-path="regularized-regression.html"><a href="regularized-regression.html#regression-glmnet-tune"><i class="fa fa-check"></i><b>6.4</b> Tuning</a></li>
+<li class="chapter" data-level="6.5" data-path="regularized-regression.html"><a href="regularized-regression.html#lm-features"><i class="fa fa-check"></i><b>6.5</b> Feature interpretation</a></li>
+<li class="chapter" data-level="6.6" data-path="regularized-regression.html"><a href="regularized-regression.html#attrition-data"><i class="fa fa-check"></i><b>6.6</b> Attrition data</a></li>
+<li class="chapter" data-level="6.7" data-path="regularized-regression.html"><a href="regularized-regression.html#final-thoughts-2"><i class="fa fa-check"></i><b>6.7</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="mars.html"><a href="mars.html"><i class="fa fa-check"></i><b>7</b> Multivariate Adaptive Regression Splines</a><ul>
+<li class="chapter" data-level="7.1" data-path="mars.html"><a href="mars.html#prerequisites-5"><i class="fa fa-check"></i><b>7.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="7.2" data-path="mars.html"><a href="mars.html#the-basic-idea"><i class="fa fa-check"></i><b>7.2</b> The basic idea</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="mars.html"><a href="mars.html#multivariate-adaptive-regression-splines"><i class="fa fa-check"></i><b>7.2.1</b> Multivariate adaptive regression splines</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="mars.html"><a href="mars.html#fitting-a-basic-mars-model"><i class="fa fa-check"></i><b>7.3</b> Fitting a basic MARS model</a></li>
+<li class="chapter" data-level="7.4" data-path="mars.html"><a href="mars.html#tuning"><i class="fa fa-check"></i><b>7.4</b> Tuning</a></li>
+<li class="chapter" data-level="7.5" data-path="mars.html"><a href="mars.html#mars-features"><i class="fa fa-check"></i><b>7.5</b> Feature interpretation</a></li>
+<li class="chapter" data-level="7.6" data-path="mars.html"><a href="mars.html#attrition-data-1"><i class="fa fa-check"></i><b>7.6</b> Attrition data</a></li>
+<li class="chapter" data-level="7.7" data-path="mars.html"><a href="mars.html#final-thoughts-3"><i class="fa fa-check"></i><b>7.7</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="knn.html"><a href="knn.html"><i class="fa fa-check"></i><b>8</b> <em>K</em>-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.1" data-path="knn.html"><a href="knn.html#prerequisites-6"><i class="fa fa-check"></i><b>8.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="8.2" data-path="knn.html"><a href="knn.html#measuring-similarity"><i class="fa fa-check"></i><b>8.2</b> Measuring similarity</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="knn.html"><a href="knn.html#knn-distance"><i class="fa fa-check"></i><b>8.2.1</b> Distance measures</a></li>
+<li class="chapter" data-level="8.2.2" data-path="knn.html"><a href="knn.html#knn-preprocess"><i class="fa fa-check"></i><b>8.2.2</b> Pre-processing</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="knn.html"><a href="knn.html#choosing-k"><i class="fa fa-check"></i><b>8.3</b> Choosing <em>k</em></a></li>
+<li class="chapter" data-level="8.4" data-path="knn.html"><a href="knn.html#knn-mnist"><i class="fa fa-check"></i><b>8.4</b> MNIST example</a></li>
+<li class="chapter" data-level="8.5" data-path="knn.html"><a href="knn.html#final-thoughts-4"><i class="fa fa-check"></i><b>8.5</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="DT.html"><a href="DT.html"><i class="fa fa-check"></i><b>9</b> Decision Trees</a><ul>
+<li class="chapter" data-level="9.1" data-path="DT.html"><a href="DT.html#prerequisites-7"><i class="fa fa-check"></i><b>9.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="9.2" data-path="DT.html"><a href="DT.html#structure"><i class="fa fa-check"></i><b>9.2</b> Structure</a></li>
+<li class="chapter" data-level="9.3" data-path="DT.html"><a href="DT.html#partitioning"><i class="fa fa-check"></i><b>9.3</b> Partitioning</a></li>
+<li class="chapter" data-level="9.4" data-path="DT.html"><a href="DT.html#how-deep"><i class="fa fa-check"></i><b>9.4</b> How deep?</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="DT.html"><a href="DT.html#early-stopping"><i class="fa fa-check"></i><b>9.4.1</b> Early stopping</a></li>
+<li class="chapter" data-level="9.4.2" data-path="DT.html"><a href="DT.html#pruning"><i class="fa fa-check"></i><b>9.4.2</b> Pruning</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="DT.html"><a href="DT.html#ames-housing-example"><i class="fa fa-check"></i><b>9.5</b> Ames housing example</a></li>
+<li class="chapter" data-level="9.6" data-path="DT.html"><a href="DT.html#dt-vip"><i class="fa fa-check"></i><b>9.6</b> Feature interpretation</a></li>
+<li class="chapter" data-level="9.7" data-path="DT.html"><a href="DT.html#final-thoughts-5"><i class="fa fa-check"></i><b>9.7</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="bagging.html"><a href="bagging.html"><i class="fa fa-check"></i><b>10</b> Bagging</a><ul>
+<li class="chapter" data-level="10.1" data-path="bagging.html"><a href="bagging.html#prerequisites-8"><i class="fa fa-check"></i><b>10.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="10.2" data-path="bagging.html"><a href="bagging.html#why-bag"><i class="fa fa-check"></i><b>10.2</b> Why and when bagging works</a></li>
+<li class="chapter" data-level="10.3" data-path="bagging.html"><a href="bagging.html#implementation-1"><i class="fa fa-check"></i><b>10.3</b> Implementation</a></li>
+<li class="chapter" data-level="10.4" data-path="bagging.html"><a href="bagging.html#easily-parallelize"><i class="fa fa-check"></i><b>10.4</b> Easily parallelize</a></li>
+<li class="chapter" data-level="10.5" data-path="bagging.html"><a href="bagging.html#bagging-vip"><i class="fa fa-check"></i><b>10.5</b> Feature interpretation</a></li>
+<li class="chapter" data-level="10.6" data-path="bagging.html"><a href="bagging.html#bagging-thoughts"><i class="fa fa-check"></i><b>10.6</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="random-forest.html"><a href="random-forest.html"><i class="fa fa-check"></i><b>11</b> Random Forests</a><ul>
+<li class="chapter" data-level="11.1" data-path="random-forest.html"><a href="random-forest.html#prerequisites-9"><i class="fa fa-check"></i><b>11.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="11.2" data-path="random-forest.html"><a href="random-forest.html#extending-bagging"><i class="fa fa-check"></i><b>11.2</b> Extending bagging</a></li>
+<li class="chapter" data-level="11.3" data-path="random-forest.html"><a href="random-forest.html#out-of-the-box-performance"><i class="fa fa-check"></i><b>11.3</b> Out-of-the-box performance</a></li>
+<li class="chapter" data-level="11.4" data-path="random-forest.html"><a href="random-forest.html#hyperparameters"><i class="fa fa-check"></i><b>11.4</b> Hyperparameters</a><ul>
+<li class="chapter" data-level="11.4.1" data-path="random-forest.html"><a href="random-forest.html#number-of-trees"><i class="fa fa-check"></i><b>11.4.1</b> Number of trees</a></li>
+<li class="chapter" data-level="11.4.2" data-path="random-forest.html"><a href="random-forest.html#mtry"><i class="fa fa-check"></i><b>11.4.2</b> <span class="math inline">\(m_{try}\)</span></a></li>
+<li class="chapter" data-level="11.4.3" data-path="random-forest.html"><a href="random-forest.html#tree-complexity"><i class="fa fa-check"></i><b>11.4.3</b> Tree complexity</a></li>
+<li class="chapter" data-level="11.4.4" data-path="random-forest.html"><a href="random-forest.html#sampling-scheme"><i class="fa fa-check"></i><b>11.4.4</b> Sampling scheme</a></li>
+<li class="chapter" data-level="11.4.5" data-path="random-forest.html"><a href="random-forest.html#split-rule"><i class="fa fa-check"></i><b>11.4.5</b> Split rule</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="random-forest.html"><a href="random-forest.html#rf-tuning-strategy"><i class="fa fa-check"></i><b>11.5</b> Tuning strategies</a></li>
+<li class="chapter" data-level="11.6" data-path="random-forest.html"><a href="random-forest.html#rf-vip"><i class="fa fa-check"></i><b>11.6</b> Feature interpretation</a></li>
+<li class="chapter" data-level="11.7" data-path="random-forest.html"><a href="random-forest.html#final-thoughts-6"><i class="fa fa-check"></i><b>11.7</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="gbm.html"><a href="gbm.html"><i class="fa fa-check"></i><b>12</b> Gradient Boosting</a><ul>
+<li class="chapter" data-level="12.1" data-path="gbm.html"><a href="gbm.html#prerequisites-10"><i class="fa fa-check"></i><b>12.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="12.2" data-path="gbm.html"><a href="gbm.html#how-boosting-works"><i class="fa fa-check"></i><b>12.2</b> How boosting works</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="gbm.html"><a href="gbm.html#a-sequential-ensemble-approach"><i class="fa fa-check"></i><b>12.2.1</b> A sequential ensemble approach</a></li>
+<li class="chapter" data-level="12.2.2" data-path="gbm.html"><a href="gbm.html#gbm-gradient"><i class="fa fa-check"></i><b>12.2.2</b> Gradient descent</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="gbm.html"><a href="gbm.html#basic-gbm"><i class="fa fa-check"></i><b>12.3</b> Basic GBM</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="gbm.html"><a href="gbm.html#hyper-gbm1"><i class="fa fa-check"></i><b>12.3.1</b> Hyperparameters</a></li>
+<li class="chapter" data-level="12.3.2" data-path="gbm.html"><a href="gbm.html#implementation-2"><i class="fa fa-check"></i><b>12.3.2</b> Implementation</a></li>
+<li class="chapter" data-level="12.3.3" data-path="gbm.html"><a href="gbm.html#tuning-strategy"><i class="fa fa-check"></i><b>12.3.3</b> General tuning strategy</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="gbm.html"><a href="gbm.html#stochastic-gbms"><i class="fa fa-check"></i><b>12.4</b> Stochastic GBMs</a><ul>
+<li class="chapter" data-level="12.4.1" data-path="gbm.html"><a href="gbm.html#hyper-gbm2"><i class="fa fa-check"></i><b>12.4.1</b> Stochastic hyperparameters</a></li>
+<li class="chapter" data-level="12.4.2" data-path="gbm.html"><a href="gbm.html#stochastic-gbm-h2o"><i class="fa fa-check"></i><b>12.4.2</b> Implementation</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="gbm.html"><a href="gbm.html#xgboost"><i class="fa fa-check"></i><b>12.5</b> XGBoost</a><ul>
+<li class="chapter" data-level="12.5.1" data-path="gbm.html"><a href="gbm.html#xgboost-hyperparameters"><i class="fa fa-check"></i><b>12.5.1</b> XGBoost hyperparameters</a><ul>
+<li class="chapter" data-level="12.5.1.1" data-path="gbm.html"><a href="gbm.html#xgb-regularization"><i class="fa fa-check"></i><b>12.5.1.1</b> Regularization</a></li>
+<li class="chapter" data-level="12.5.1.2" data-path="gbm.html"><a href="gbm.html#dropout"><i class="fa fa-check"></i><b>12.5.1.2</b> Dropout</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5.2" data-path="gbm.html"><a href="gbm.html#xgb-tuning-strategy"><i class="fa fa-check"></i><b>12.5.2</b> Tuning strategy</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="gbm.html"><a href="gbm.html#feature-interpretation-1"><i class="fa fa-check"></i><b>12.6</b> Feature interpretation</a></li>
+<li class="chapter" data-level="12.7" data-path="gbm.html"><a href="gbm.html#final-thoughts-7"><i class="fa fa-check"></i><b>12.7</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="deep-learning.html"><a href="deep-learning.html"><i class="fa fa-check"></i><b>13</b> Deep Learning</a><ul>
+<li class="chapter" data-level="13.1" data-path="deep-learning.html"><a href="deep-learning.html#prerequisites-11"><i class="fa fa-check"></i><b>13.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="13.2" data-path="deep-learning.html"><a href="deep-learning.html#why-dl"><i class="fa fa-check"></i><b>13.2</b> Why deep learning</a></li>
+<li class="chapter" data-level="13.3" data-path="deep-learning.html"><a href="deep-learning.html#ff"><i class="fa fa-check"></i><b>13.3</b> Feedforward DNNs</a></li>
+<li class="chapter" data-level="13.4" data-path="deep-learning.html"><a href="deep-learning.html#arch"><i class="fa fa-check"></i><b>13.4</b> Network architecture</a><ul>
+<li class="chapter" data-level="13.4.1" data-path="deep-learning.html"><a href="deep-learning.html#layers-and-nodes"><i class="fa fa-check"></i><b>13.4.1</b> Layers and nodes</a><ul>
+<li class="chapter" data-level="13.4.1.1" data-path="deep-learning.html"><a href="deep-learning.html#hidden-layers"><i class="fa fa-check"></i><b>13.4.1.1</b> Hidden layers</a></li>
+<li class="chapter" data-level="13.4.1.2" data-path="deep-learning.html"><a href="deep-learning.html#output-layers"><i class="fa fa-check"></i><b>13.4.1.2</b> Output layers</a></li>
+<li class="chapter" data-level="13.4.1.3" data-path="deep-learning.html"><a href="deep-learning.html#implementation-3"><i class="fa fa-check"></i><b>13.4.1.3</b> Implementation</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4.2" data-path="deep-learning.html"><a href="deep-learning.html#activation"><i class="fa fa-check"></i><b>13.4.2</b> Activation</a><ul>
+<li class="chapter" data-level="13.4.2.1" data-path="deep-learning.html"><a href="deep-learning.html#activations"><i class="fa fa-check"></i><b>13.4.2.1</b> Activation functions</a></li>
+<li class="chapter" data-level="13.4.2.2" data-path="deep-learning.html"><a href="deep-learning.html#implementation-4"><i class="fa fa-check"></i><b>13.4.2.2</b> Implementation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13.5" data-path="deep-learning.html"><a href="deep-learning.html#dl-back"><i class="fa fa-check"></i><b>13.5</b> Backpropagation</a></li>
+<li class="chapter" data-level="13.6" data-path="deep-learning.html"><a href="deep-learning.html#dl-train"><i class="fa fa-check"></i><b>13.6</b> Model training</a></li>
+<li class="chapter" data-level="13.7" data-path="deep-learning.html"><a href="deep-learning.html#dl-tuning"><i class="fa fa-check"></i><b>13.7</b> Model tuning</a><ul>
+<li class="chapter" data-level="13.7.1" data-path="deep-learning.html"><a href="deep-learning.html#model-capacity"><i class="fa fa-check"></i><b>13.7.1</b> Model capacity</a></li>
+<li class="chapter" data-level="13.7.2" data-path="deep-learning.html"><a href="deep-learning.html#batch-normalization"><i class="fa fa-check"></i><b>13.7.2</b> Batch normalization</a></li>
+<li class="chapter" data-level="13.7.3" data-path="deep-learning.html"><a href="deep-learning.html#dl-regularization"><i class="fa fa-check"></i><b>13.7.3</b> Regularization</a></li>
+<li class="chapter" data-level="13.7.4" data-path="deep-learning.html"><a href="deep-learning.html#adjust-learning-rate"><i class="fa fa-check"></i><b>13.7.4</b> Adjust learning rate</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="deep-learning.html"><a href="deep-learning.html#grid-search"><i class="fa fa-check"></i><b>13.8</b> Grid Search</a></li>
+<li class="chapter" data-level="13.9" data-path="deep-learning.html"><a href="deep-learning.html#final-thoughts-8"><i class="fa fa-check"></i><b>13.9</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="svm.html"><a href="svm.html"><i class="fa fa-check"></i><b>14</b> Support Vector Machines</a><ul>
+<li class="chapter" data-level="14.1" data-path="svm.html"><a href="svm.html#prerequisites-12"><i class="fa fa-check"></i><b>14.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="14.2" data-path="svm.html"><a href="svm.html#hyperplanes"><i class="fa fa-check"></i><b>14.2</b> Optimal separating hyperplanes</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="svm.html"><a href="svm.html#the-hard-margin-classifier"><i class="fa fa-check"></i><b>14.2.1</b> The hard margin classifier</a></li>
+<li class="chapter" data-level="14.2.2" data-path="svm.html"><a href="svm.html#the-soft-margin-classifier"><i class="fa fa-check"></i><b>14.2.2</b> The soft margin classifier</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="svm.html"><a href="svm.html#the-support-vector-machine"><i class="fa fa-check"></i><b>14.3</b> The support vector machine</a><ul>
+<li class="chapter" data-level="14.3.1" data-path="svm.html"><a href="svm.html#more-than-two-classes"><i class="fa fa-check"></i><b>14.3.1</b> More than two classes</a></li>
+<li class="chapter" data-level="14.3.2" data-path="svm.html"><a href="svm.html#support-vector-regression"><i class="fa fa-check"></i><b>14.3.2</b> Support vector regression</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="svm.html"><a href="svm.html#job-attrition-example"><i class="fa fa-check"></i><b>14.4</b> Job attrition example</a><ul>
+<li class="chapter" data-level="14.4.1" data-path="svm.html"><a href="svm.html#class-weights"><i class="fa fa-check"></i><b>14.4.1</b> Class weights</a></li>
+<li class="chapter" data-level="14.4.2" data-path="svm.html"><a href="svm.html#class-probabilities"><i class="fa fa-check"></i><b>14.4.2</b> Class probabilities</a></li>
+</ul></li>
+<li class="chapter" data-level="14.5" data-path="svm.html"><a href="svm.html#feature-interpretation-2"><i class="fa fa-check"></i><b>14.5</b> Feature interpretation</a></li>
+<li class="chapter" data-level="14.6" data-path="svm.html"><a href="svm.html#final-thoughts-9"><i class="fa fa-check"></i><b>14.6</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="stacking.html"><a href="stacking.html"><i class="fa fa-check"></i><b>15</b> Stacked Models</a><ul>
+<li class="chapter" data-level="15.1" data-path="stacking.html"><a href="stacking.html#h20-prereqs"><i class="fa fa-check"></i><b>15.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="15.2" data-path="stacking.html"><a href="stacking.html#the-idea"><i class="fa fa-check"></i><b>15.2</b> The Idea</a><ul>
+<li class="chapter" data-level="15.2.1" data-path="stacking.html"><a href="stacking.html#common-ensemble-methods"><i class="fa fa-check"></i><b>15.2.1</b> Common ensemble methods</a></li>
+<li class="chapter" data-level="15.2.2" data-path="stacking.html"><a href="stacking.html#super-learner-algorithm"><i class="fa fa-check"></i><b>15.2.2</b> Super learner algorithm</a></li>
+<li class="chapter" data-level="15.2.3" data-path="stacking.html"><a href="stacking.html#available-packages"><i class="fa fa-check"></i><b>15.2.3</b> Available packages</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="stacking.html"><a href="stacking.html#stacking-existing"><i class="fa fa-check"></i><b>15.3</b> Stacking existing models</a></li>
+<li class="chapter" data-level="15.4" data-path="stacking.html"><a href="stacking.html#stacking-a-grid-search"><i class="fa fa-check"></i><b>15.4</b> Stacking a grid search</a></li>
+<li class="chapter" data-level="15.5" data-path="stacking.html"><a href="stacking.html#automated-machine-learning"><i class="fa fa-check"></i><b>15.5</b> Automated machine learning</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="iml.html"><a href="iml.html"><i class="fa fa-check"></i><b>16</b> Interpretable Machine Learning</a><ul>
+<li class="chapter" data-level="16.1" data-path="iml.html"><a href="iml.html#prerequisites-13"><i class="fa fa-check"></i><b>16.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="16.2" data-path="iml.html"><a href="iml.html#the-idea-1"><i class="fa fa-check"></i><b>16.2</b> The idea</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="iml.html"><a href="iml.html#global-interpretation"><i class="fa fa-check"></i><b>16.2.1</b> Global interpretation</a></li>
+<li class="chapter" data-level="16.2.2" data-path="iml.html"><a href="iml.html#local-interpretation"><i class="fa fa-check"></i><b>16.2.2</b> Local interpretation</a></li>
+<li class="chapter" data-level="16.2.3" data-path="iml.html"><a href="iml.html#agnostic"><i class="fa fa-check"></i><b>16.2.3</b> Model-specific vs. model-agnostic</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="iml.html"><a href="iml.html#permutation-based-feature-importance"><i class="fa fa-check"></i><b>16.3</b> Permutation-based feature importance</a><ul>
+<li class="chapter" data-level="16.3.1" data-path="iml.html"><a href="iml.html#concept"><i class="fa fa-check"></i><b>16.3.1</b> Concept</a></li>
+<li class="chapter" data-level="16.3.2" data-path="iml.html"><a href="iml.html#implementation-5"><i class="fa fa-check"></i><b>16.3.2</b> Implementation</a></li>
+</ul></li>
+<li class="chapter" data-level="16.4" data-path="iml.html"><a href="iml.html#partial-dependence"><i class="fa fa-check"></i><b>16.4</b> Partial dependence</a><ul>
+<li class="chapter" data-level="16.4.1" data-path="iml.html"><a href="iml.html#concept-1"><i class="fa fa-check"></i><b>16.4.1</b> Concept</a></li>
+<li class="chapter" data-level="16.4.2" data-path="iml.html"><a href="iml.html#implementation-6"><i class="fa fa-check"></i><b>16.4.2</b> Implementation</a></li>
+<li class="chapter" data-level="16.4.3" data-path="iml.html"><a href="iml.html#alternative-uses"><i class="fa fa-check"></i><b>16.4.3</b> Alternative uses</a></li>
+</ul></li>
+<li class="chapter" data-level="16.5" data-path="iml.html"><a href="iml.html#individual-conditional-expectation"><i class="fa fa-check"></i><b>16.5</b> Individual conditional expectation</a><ul>
+<li class="chapter" data-level="16.5.1" data-path="iml.html"><a href="iml.html#concept-2"><i class="fa fa-check"></i><b>16.5.1</b> Concept</a></li>
+<li class="chapter" data-level="16.5.2" data-path="iml.html"><a href="iml.html#implementation-7"><i class="fa fa-check"></i><b>16.5.2</b> Implementation</a></li>
+</ul></li>
+<li class="chapter" data-level="16.6" data-path="iml.html"><a href="iml.html#feature-interactions"><i class="fa fa-check"></i><b>16.6</b> Feature interactions</a><ul>
+<li class="chapter" data-level="16.6.1" data-path="iml.html"><a href="iml.html#concept-3"><i class="fa fa-check"></i><b>16.6.1</b> Concept</a></li>
+<li class="chapter" data-level="16.6.2" data-path="iml.html"><a href="iml.html#implementation-8"><i class="fa fa-check"></i><b>16.6.2</b> Implementation</a></li>
+<li class="chapter" data-level="16.6.3" data-path="iml.html"><a href="iml.html#alternatives-2"><i class="fa fa-check"></i><b>16.6.3</b> Alternatives</a></li>
+</ul></li>
+<li class="chapter" data-level="16.7" data-path="iml.html"><a href="iml.html#local-interpretable-model-agnostic-explanations"><i class="fa fa-check"></i><b>16.7</b> Local interpretable model-agnostic explanations</a><ul>
+<li class="chapter" data-level="16.7.1" data-path="iml.html"><a href="iml.html#concept-4"><i class="fa fa-check"></i><b>16.7.1</b> Concept</a></li>
+<li class="chapter" data-level="16.7.2" data-path="iml.html"><a href="iml.html#implementation-9"><i class="fa fa-check"></i><b>16.7.2</b> Implementation</a></li>
+<li class="chapter" data-level="16.7.3" data-path="iml.html"><a href="iml.html#tuning-1"><i class="fa fa-check"></i><b>16.7.3</b> Tuning</a></li>
+<li class="chapter" data-level="16.7.4" data-path="iml.html"><a href="iml.html#alternative-uses-1"><i class="fa fa-check"></i><b>16.7.4</b> Alternative uses</a></li>
+</ul></li>
+<li class="chapter" data-level="16.8" data-path="iml.html"><a href="iml.html#shapley-values"><i class="fa fa-check"></i><b>16.8</b> Shapley values</a><ul>
+<li class="chapter" data-level="16.8.1" data-path="iml.html"><a href="iml.html#concept-5"><i class="fa fa-check"></i><b>16.8.1</b> Concept</a></li>
+<li class="chapter" data-level="16.8.2" data-path="iml.html"><a href="iml.html#implementation-10"><i class="fa fa-check"></i><b>16.8.2</b> Implementation</a></li>
+<li class="chapter" data-level="16.8.3" data-path="iml.html"><a href="iml.html#xgboost-and-built-in-shapley-values"><i class="fa fa-check"></i><b>16.8.3</b> XGBoost and built-in Shapley values</a></li>
+</ul></li>
+<li class="chapter" data-level="16.9" data-path="iml.html"><a href="iml.html#localized-step-wise-procedure"><i class="fa fa-check"></i><b>16.9</b> Localized step-wise procedure</a><ul>
+<li class="chapter" data-level="16.9.1" data-path="iml.html"><a href="iml.html#concept-6"><i class="fa fa-check"></i><b>16.9.1</b> Concept</a></li>
+<li class="chapter" data-level="16.9.2" data-path="iml.html"><a href="iml.html#implementation-11"><i class="fa fa-check"></i><b>16.9.2</b> Implementation</a></li>
+</ul></li>
+<li class="chapter" data-level="16.10" data-path="iml.html"><a href="iml.html#final-thoughts-10"><i class="fa fa-check"></i><b>16.10</b> Final thoughts</a></li>
+</ul></li>
+<li class="part"><span><b>III Dimension Reduction</b></span></li>
+<li class="chapter" data-level="17" data-path="pca.html"><a href="pca.html"><i class="fa fa-check"></i><b>17</b> Principal Components Analysis</a><ul>
+<li class="chapter" data-level="17.1" data-path="pca.html"><a href="pca.html#prerequisites-14"><i class="fa fa-check"></i><b>17.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="17.2" data-path="pca.html"><a href="pca.html#the-idea-2"><i class="fa fa-check"></i><b>17.2</b> The idea</a></li>
+<li class="chapter" data-level="17.3" data-path="pca.html"><a href="pca.html#finding-principal-components"><i class="fa fa-check"></i><b>17.3</b> Finding principal components</a></li>
+<li class="chapter" data-level="17.4" data-path="pca.html"><a href="pca.html#performing-pca-in-r"><i class="fa fa-check"></i><b>17.4</b> Performing PCA in R</a></li>
+<li class="chapter" data-level="17.5" data-path="pca.html"><a href="pca.html#pca-selecting-pcs"><i class="fa fa-check"></i><b>17.5</b> Selecting the number of principal components</a><ul>
+<li class="chapter" data-level="17.5.1" data-path="pca.html"><a href="pca.html#eigenvalue-criterion"><i class="fa fa-check"></i><b>17.5.1</b> Eigenvalue criterion</a></li>
+<li class="chapter" data-level="17.5.2" data-path="pca.html"><a href="pca.html#PVE"><i class="fa fa-check"></i><b>17.5.2</b> Proportion of variance explained criterion</a></li>
+<li class="chapter" data-level="17.5.3" data-path="pca.html"><a href="pca.html#scree"><i class="fa fa-check"></i><b>17.5.3</b> Scree plot criterion</a></li>
+</ul></li>
+<li class="chapter" data-level="17.6" data-path="pca.html"><a href="pca.html#final-thoughts-11"><i class="fa fa-check"></i><b>17.6</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="GLRM.html"><a href="GLRM.html"><i class="fa fa-check"></i><b>18</b> Generalized Low Rank Models</a><ul>
+<li class="chapter" data-level="18.1" data-path="GLRM.html"><a href="GLRM.html#prerequisites-15"><i class="fa fa-check"></i><b>18.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="18.2" data-path="GLRM.html"><a href="GLRM.html#the-idea-3"><i class="fa fa-check"></i><b>18.2</b> The idea</a></li>
+<li class="chapter" data-level="18.3" data-path="GLRM.html"><a href="GLRM.html#finding-the-lower-ranks"><i class="fa fa-check"></i><b>18.3</b> Finding the lower ranks</a><ul>
+<li class="chapter" data-level="18.3.1" data-path="GLRM.html"><a href="GLRM.html#alternating-minimization"><i class="fa fa-check"></i><b>18.3.1</b> Alternating minimization</a></li>
+<li class="chapter" data-level="18.3.2" data-path="GLRM.html"><a href="GLRM.html#loss-functions"><i class="fa fa-check"></i><b>18.3.2</b> Loss functions</a></li>
+<li class="chapter" data-level="18.3.3" data-path="GLRM.html"><a href="GLRM.html#regularization"><i class="fa fa-check"></i><b>18.3.3</b> Regularization</a></li>
+<li class="chapter" data-level="18.3.4" data-path="GLRM.html"><a href="GLRM.html#selecting-k"><i class="fa fa-check"></i><b>18.3.4</b> Selecting <em>k</em></a></li>
+</ul></li>
+<li class="chapter" data-level="18.4" data-path="GLRM.html"><a href="GLRM.html#fitting-glrms-in-r"><i class="fa fa-check"></i><b>18.4</b> Fitting GLRMs in R</a><ul>
+<li class="chapter" data-level="18.4.1" data-path="GLRM.html"><a href="GLRM.html#basic-glrm-model"><i class="fa fa-check"></i><b>18.4.1</b> Basic GLRM model</a></li>
+<li class="chapter" data-level="18.4.2" data-path="GLRM.html"><a href="GLRM.html#tuning-to-optimize-for-unseen-data"><i class="fa fa-check"></i><b>18.4.2</b> Tuning to optimize for unseen data</a></li>
+</ul></li>
+<li class="chapter" data-level="18.5" data-path="GLRM.html"><a href="GLRM.html#final-thoughts-12"><i class="fa fa-check"></i><b>18.5</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="autoencoders.html"><a href="autoencoders.html"><i class="fa fa-check"></i><b>19</b> Autoencoders</a><ul>
+<li class="chapter" data-level="19.1" data-path="autoencoders.html"><a href="autoencoders.html#prerequisites-16"><i class="fa fa-check"></i><b>19.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="19.2" data-path="autoencoders.html"><a href="autoencoders.html#undercomplete-autoencoders"><i class="fa fa-check"></i><b>19.2</b> Undercomplete autoencoders</a><ul>
+<li class="chapter" data-level="19.2.1" data-path="autoencoders.html"><a href="autoencoders.html#comparing-pca-to-an-autoencoder"><i class="fa fa-check"></i><b>19.2.1</b> Comparing PCA to an autoencoder</a></li>
+<li class="chapter" data-level="19.2.2" data-path="autoencoders.html"><a href="autoencoders.html#stacked-autoencoders"><i class="fa fa-check"></i><b>19.2.2</b> Stacked autoencoders</a></li>
+<li class="chapter" data-level="19.2.3" data-path="autoencoders.html"><a href="autoencoders.html#visualizing-the-reconstruction"><i class="fa fa-check"></i><b>19.2.3</b> Visualizing the reconstruction</a></li>
+</ul></li>
+<li class="chapter" data-level="19.3" data-path="autoencoders.html"><a href="autoencoders.html#sparse-autoencoders"><i class="fa fa-check"></i><b>19.3</b> Sparse autoencoders</a></li>
+<li class="chapter" data-level="19.4" data-path="autoencoders.html"><a href="autoencoders.html#denoising-autoencoders"><i class="fa fa-check"></i><b>19.4</b> Denoising autoencoders</a></li>
+<li class="chapter" data-level="19.5" data-path="autoencoders.html"><a href="autoencoders.html#anomaly-detection"><i class="fa fa-check"></i><b>19.5</b> Anomaly detection</a></li>
+<li class="chapter" data-level="19.6" data-path="autoencoders.html"><a href="autoencoders.html#final-thoughts-13"><i class="fa fa-check"></i><b>19.6</b> Final thoughts</a></li>
+</ul></li>
+<li class="part"><span><b>IV Clustering</b></span></li>
+<li class="chapter" data-level="20" data-path="kmeans.html"><a href="kmeans.html"><i class="fa fa-check"></i><b>20</b> <em>K</em>-means Clustering</a><ul>
+<li class="chapter" data-level="20.1" data-path="kmeans.html"><a href="kmeans.html#prerequisites-17"><i class="fa fa-check"></i><b>20.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="20.2" data-path="kmeans.html"><a href="kmeans.html#distance-measures"><i class="fa fa-check"></i><b>20.2</b> Distance measures</a></li>
+<li class="chapter" data-level="20.3" data-path="kmeans.html"><a href="kmeans.html#defining-clusters"><i class="fa fa-check"></i><b>20.3</b> Defining clusters</a></li>
+<li class="chapter" data-level="20.4" data-path="kmeans.html"><a href="kmeans.html#k-means-algorithm"><i class="fa fa-check"></i><b>20.4</b> <em>k</em>-means algorithm</a></li>
+<li class="chapter" data-level="20.5" data-path="kmeans.html"><a href="kmeans.html#clustering-digits"><i class="fa fa-check"></i><b>20.5</b> Clustering digits</a></li>
+<li class="chapter" data-level="20.6" data-path="kmeans.html"><a href="kmeans.html#determine-k"><i class="fa fa-check"></i><b>20.6</b> How many clusters?</a></li>
+<li class="chapter" data-level="20.7" data-path="kmeans.html"><a href="kmeans.html#cluster-mixed"><i class="fa fa-check"></i><b>20.7</b> Clustering with mixed data</a></li>
+<li class="chapter" data-level="20.8" data-path="kmeans.html"><a href="kmeans.html#alt-partitioning-methods"><i class="fa fa-check"></i><b>20.8</b> Alternative partitioning methods</a></li>
+<li class="chapter" data-level="20.9" data-path="kmeans.html"><a href="kmeans.html#final-thoughts-14"><i class="fa fa-check"></i><b>20.9</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="hierarchical.html"><a href="hierarchical.html"><i class="fa fa-check"></i><b>21</b> Hierarchical Clustering</a><ul>
+<li class="chapter" data-level="21.1" data-path="hierarchical.html"><a href="hierarchical.html#prerequisites-18"><i class="fa fa-check"></i><b>21.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="21.2" data-path="hierarchical.html"><a href="hierarchical.html#hierarchical-clustering-algorithms"><i class="fa fa-check"></i><b>21.2</b> Hierarchical clustering algorithms</a></li>
+<li class="chapter" data-level="21.3" data-path="hierarchical.html"><a href="hierarchical.html#hierarchical-clustering-in-r"><i class="fa fa-check"></i><b>21.3</b> Hierarchical clustering in R</a><ul>
+<li class="chapter" data-level="21.3.1" data-path="hierarchical.html"><a href="hierarchical.html#agglomerative-hierarchical-clustering"><i class="fa fa-check"></i><b>21.3.1</b> Agglomerative hierarchical clustering</a></li>
+<li class="chapter" data-level="21.3.2" data-path="hierarchical.html"><a href="hierarchical.html#divisive-hierarchical-clustering"><i class="fa fa-check"></i><b>21.3.2</b> Divisive hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="21.4" data-path="hierarchical.html"><a href="hierarchical.html#determining-optimal-clusters"><i class="fa fa-check"></i><b>21.4</b> Determining optimal clusters</a></li>
+<li class="chapter" data-level="21.5" data-path="hierarchical.html"><a href="hierarchical.html#working-with-dendrograms"><i class="fa fa-check"></i><b>21.5</b> Working with dendrograms</a></li>
+<li class="chapter" data-level="21.6" data-path="hierarchical.html"><a href="hierarchical.html#final-thoughts-15"><i class="fa fa-check"></i><b>21.6</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="model-clustering.html"><a href="model-clustering.html"><i class="fa fa-check"></i><b>22</b> Model-based Clustering</a><ul>
+<li class="chapter" data-level="22.1" data-path="model-clustering.html"><a href="model-clustering.html#prerequisites-19"><i class="fa fa-check"></i><b>22.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="22.2" data-path="model-clustering.html"><a href="model-clustering.html#measuring-probability-and-uncertainty"><i class="fa fa-check"></i><b>22.2</b> Measuring probability and uncertainty</a></li>
+<li class="chapter" data-level="22.3" data-path="model-clustering.html"><a href="model-clustering.html#covariance-types"><i class="fa fa-check"></i><b>22.3</b> Covariance types</a></li>
+<li class="chapter" data-level="22.4" data-path="model-clustering.html"><a href="model-clustering.html#model-selection"><i class="fa fa-check"></i><b>22.4</b> Model selection</a></li>
+<li class="chapter" data-level="22.5" data-path="model-clustering.html"><a href="model-clustering.html#my-basket-example"><i class="fa fa-check"></i><b>22.5</b> My basket example</a></li>
+<li class="chapter" data-level="22.6" data-path="model-clustering.html"><a href="model-clustering.html#final-thoughts-16"><i class="fa fa-check"></i><b>22.6</b> Final thoughts</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Hands-On Machine Learning with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="gbm" class="section level1">
+<h1><span class="header-section-number">Chapter 12</span> Gradient Boosting</h1>
+<p>Gradient boosting machines (GBMs) are an extremely popular machine learning algorithm that have proven successful across many domains and is one of the leading methods for winning Kaggle competitions. Whereas random forests (Chapter <a href="random-forest.html#random-forest">11</a>) build an ensemble of deep independent trees, GBMs build an ensemble of shallow trees in sequence with each tree learning and improving on the previous one. Although shallow trees by themselves are rather weak predictive models, they can be “boosted” to produce a powerful “committee” that, when appropriately tuned, is often hard to beat with other algorithms. This chapter will cover the fundamentals to understanding and implementing some popular implementations of GBMs.</p>
+<div id="prerequisites-10" class="section level2">
+<h2><span class="header-section-number">12.1</span> Prerequisites</h2>
+<p>This chapter leverages the following packages. Some of these packages play a supporting role; however, our focus is on demonstrating how to implement GBMs with the <strong>gbm</strong> <span class="citation">(B Greenwell et al. <a href="#ref-gbm-pkg">2018</a>)</span>, <strong>xgboost</strong> <span class="citation">(Chen et al. <a href="#ref-xgboost-pkg">2018</a>)</span>, and <strong>h2o</strong> packages.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Helper packages</span>
+<span class="kw">library</span>(dplyr)    <span class="co"># for general data wrangling needs</span>
+
+<span class="co"># Modeling packages</span>
+<span class="kw">library</span>(gbm)      <span class="co"># for original implementation of regular and stochastic GBMs</span>
+<span class="kw">library</span>(h2o)      <span class="co"># for a java-based implementation of GBM variants</span>
+<span class="kw">library</span>(xgboost)  <span class="co"># for fitting extreme gradient boosting</span></code></pre>
+<p>We’ll continue working with the <code>ames_train</code> data set created in Section <a href="process.html#put-process-together">2.7</a> to illustrate the main concepts. We’ll also demonstrate <strong>h2o</strong> functionality using the same setup from Section <a href="random-forest.html#rf-tuning-strategy">11.5</a>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">h2o.init</span>(<span class="dt">max_mem_size =</span> <span class="st">&quot;10g&quot;</span>)
+
+train_h2o &lt;-<span class="st"> </span><span class="kw">as.h2o</span>(ames_train)
+response &lt;-<span class="st"> &quot;Sale_Price&quot;</span>
+predictors &lt;-<span class="st"> </span><span class="kw">setdiff</span>(<span class="kw">colnames</span>(ames_train), response)</code></pre>
+</div>
+<div id="how-boosting-works" class="section level2">
+<h2><span class="header-section-number">12.2</span> How boosting works</h2>
+<p>Several supervised machine learning algorithms are based on a single predictive model, for example: ordinary linear regression, penalized regression models, single decision trees, and support vector machines. Bagging and random forests, on the other hand, work by combining multiple models together into an overall ensemble. New predictions are made by combining the predictions from the individual base models that make up the ensemble (e.g., by averaging in regression). Since averaging reduces variance, bagging (and hence, random forests) are most effectively applied to models with low bias and high variance (e.g., an overgrown decision tree). While boosting is a general algorithm for building an ensemble out of simpler models (typically decision trees), it is more effectively applied to models with high bias and low variance! Although boosting, like bagging, can be applied to any type of model, it is often most effectively applied to decision trees (which we’ll assume from this point on).</p>
+<div id="a-sequential-ensemble-approach" class="section level3">
+<h3><span class="header-section-number">12.2.1</span> A sequential ensemble approach</h3>
+<p>The main idea of boosting is to add new models to the ensemble <strong><em>sequentially</em></strong>. In essence, boosting attacks the bias-variance-tradeoff by starting with a <em>weak</em> model (e.g., a decision tree with only a few splits) and sequentially <em>boosts</em> its performance by continuing to build new trees, where each new tree in the sequence tries to fix up where the previous one made the biggest mistakes (i.e., each new tree in the sequence will focus on the training rows where the previous tree had the largest prediction errors); see Figure <a href="gbm.html#fig:sequential-fig">12.1</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:sequential-fig"></span>
+<img src="images/boosted-trees-process.png" alt="Sequential ensemble approach." width="75%" height="75%" />
+<p class="caption">
+Figure 12.1: Sequential ensemble approach.
+</p>
+</div>
+<p>Let’s discuss the important components of boosting in closer detail.</p>
+<p><strong>The base learners</strong>: Boosting is a framework that iteratively improves <em>any</em> weak learning model. Many gradient boosting applications allow you to “plug in” various classes of weak learners at your disposal. In practice however, boosted algorithms almost always use decision trees as the base-learner. Consequently, this chapter will discuss boosting in the context of decision trees.</p>
+<p><strong>Training weak models</strong>: A weak model is one whose error rate is only slightly better than random guessing. The idea behind boosting is that each model in the sequence slightly improves upon the performance of the previous one (essentially, by focusing on the rows of the training data where the previous tree had the largest errors or residuals). With regards to decision trees, shallow trees (i.e., trees with relatively few splits) represent a weak learner. In boosting, trees with 1–6 splits are most common.</p>
+<p><strong>Sequential training with respect to errors</strong>: Boosted trees are grown sequentially; each tree is grown using information from previously grown trees to improve performance. This is illustrated in the following algorithm for boosting regression trees. By fitting each tree in the sequence to the previous tree’s residuals, we’re allowing each new tree in the sequence to focus on the previous tree’s mistakes:</p>
+<ol style="list-style-type: decimal">
+<li>Fit a decision tree to the data: <span class="math inline">\(F_1\left(x\right) = y\)</span>,</li>
+<li>We then fit the next decision tree to the residuals of the previous: <span class="math inline">\(h_1\left(x\right) = y - F_1\left(x\right)\)</span>,</li>
+<li>Add this new tree to our algorithm: <span class="math inline">\(F_2\left(x\right) = F_1\left(x\right) + h_1\left(x\right)\)</span>,</li>
+<li>Fit the next decision tree to the residuals of <span class="math inline">\(F_2\)</span>: <span class="math inline">\(h_2\left(x\right) = y - F_2\left(x\right)\)</span>,</li>
+<li>Add this new tree to our algorithm: <span class="math inline">\(F_3\left(x\right) = F_2\left(x\right) + h_2\left(x\right)\)</span>,</li>
+<li>Continue this process until some mechanism (i.e. cross validation) tells us to stop.</li>
+</ol>
+<p>The final model here is a stagewise additive model of <em>b</em> individual trees:</p>
+<p><span class="math display">\[ f\left(x\right) =  \sum^B_{b=1}f^b\left(x\right) \tag{1} \]</span></p>
+<p>Figure <a href="gbm.html#fig:boosting-in-action">12.2</a> illustrates with a simple example where a single predictor (<span class="math inline">\(x\)</span>) has a true underlying sine wave relationship (blue line) with <em>y</em> along with some irreducible error. The first tree fit in the series is a single decision stump (i.e., a tree with a single split). Each successive decision stump thereafter is fit to the previous one’s residuals. Initially there are large errors, but each additional decision stump in the sequence makes a small improvement in different areas across the feature space where errors still remain.</p>
+<div class="figure" style="text-align: center"><span id="fig:boosting-in-action"></span>
+<img src="10-gradient-boosting_files/figure-html/boosting-in-action-1.png" alt="Boosted regression decision stumps as 0-1024 successive trees are added." width="960" />
+<p class="caption">
+Figure 12.2: Boosted regression decision stumps as 0-1024 successive trees are added.
+</p>
+</div>
+</div>
+<div id="gbm-gradient" class="section level3">
+<h3><span class="header-section-number">12.2.2</span> Gradient descent</h3>
+<p>Many algorithms in regression, including decision trees, focus on minimizing some function of the residuals; most typically the SSE loss function, or equivalently, the MSE or RMSE (this is accomplished through simple calculus and is the approach taken with least squares). The boosting algorithm for regression discussed in the previous section outlines the approach of sequentially fitting regression trees to the residuals from the previous tree. This specific approach is how gradient boosting minimizes the mean squared error (SSE) loss function (for SSE loss, the gradient is nothing more than the residual error). However, we often wish to focus on other loss functions such as mean absolute error (MAE)—which is less sensitive to outliers—or to be able to apply the method to a classification problem with a loss function such as deviance, or log loss. The name <strong><em>gradient</em></strong> boosting machine comes from the fact that this procedure can be generalized to loss functions other than SSE.</p>
+<p>Gradient boosting is considered a <strong><em>gradient descent</em></strong> algorithm. Gradient descent is a very generic optimization algorithm capable of finding optimal solutions to a wide range of problems. The general idea of gradient descent is to tweak parameter(s) iteratively in order to minimize a cost function. Suppose you are a downhill skier racing your friend. A good strategy to beat your friend to the bottom is to take the path with the steepest slope. This is exactly what gradient descent does—it measures the local gradient of the loss (cost) function for a given set of parameters (<span class="math inline">\(\Theta\)</span>) and takes steps in the direction of the descending gradient. As Figure <a href="gbm.html#fig:gradient-descent-fig">12.3</a><a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a> illustrates, once the gradient is zero, we have reached a minimum.</p>
+<div class="figure" style="text-align: center"><span id="fig:gradient-descent-fig"></span>
+<img src="10-gradient-boosting_files/figure-html/gradient-descent-fig-1.png" alt="Gradient descent is the process of gradually decreasing the cost function (i.e. MSE) by tweaking parameter(s) iteratively until you have reached a minimum." width="480" />
+<p class="caption">
+Figure 12.3: Gradient descent is the process of gradually decreasing the cost function (i.e. MSE) by tweaking parameter(s) iteratively until you have reached a minimum.
+</p>
+</div>
+<p>Gradient descent can be performed on any loss function that is differentiable. Consequently, this allows GBMs to optimize different loss functions as desired (see <span class="citation">J. Friedman, Hastie, and Tibshirani (<a href="#ref-esl">2001</a>)</span>, p. 360 for common loss functions). An important parameter in gradient descent is the size of the steps which is controlled by the <em>learning rate</em>. If the learning rate is too small, then the algorithm will take many iterations (steps) to find the minimum. On the other hand, if the learning rate is too high, you might jump across the minimum and end up further away than when you started.</p>
+<div class="figure" style="text-align: center"><span id="fig:learning-rate-fig"></span>
+<img src="10-gradient-boosting_files/figure-html/learning-rate-fig-1.png" alt="A learning rate that is too small will require many iterations to find the minimum. A learning rate too big may jump over the minimum." width="960" />
+<p class="caption">
+Figure 12.4: A learning rate that is too small will require many iterations to find the minimum. A learning rate too big may jump over the minimum.
+</p>
+</div>
+<p>Moreover, not all cost functions are <em>convex</em> (i.e., bowl shaped). There may be local minimas, plateaus, and other irregular terrain of the loss function that makes finding the global minimum difficult. <strong><em>Stochastic gradient descent</em></strong> can help us address this problem by sampling a fraction of the training observations (typically without replacement) and growing the next tree using that subsample. This makes the algorithm faster but the stochastic nature of random sampling also adds some random nature in descending the loss function’s gradient. Although this randomness does not allow the algorithm to find the absolute global minimum, it can actually help the algorithm jump out of local minima and off plateaus to get sufficiently near the global minimum.</p>
+<div class="figure" style="text-align: center"><span id="fig:stochastic-gradient-descent-fig"></span>
+<img src="10-gradient-boosting_files/figure-html/stochastic-gradient-descent-fig-1.png" alt="Stochastic gradient descent will often find a near-optimal solution by jumping out of local minimas and off plateaus." width="672" />
+<p class="caption">
+Figure 12.5: Stochastic gradient descent will often find a near-optimal solution by jumping out of local minimas and off plateaus.
+</p>
+</div>
+<p>As we’ll see in the sections that follow, there are several hyperparameter tuning options available in stochastic gradient boosting (some control the gradient descent and others control the tree growing process). If properly tuned (e.g., with <em>k</em>-fold CV) GBMs can lead to some of the most flexible and accurate predictive models you can build!</p>
+</div>
+</div>
+<div id="basic-gbm" class="section level2">
+<h2><span class="header-section-number">12.3</span> Basic GBM</h2>
+<p>There are multiple variants of boosting algorithms with the original focused on classification problems <span class="citation">(Kuhn and Johnson <a href="#ref-apm">2013</a>)</span>. Throughout the 1990’s many approaches were developed with the most successful being the AdaBoost algorithm <span class="citation">(Freund and Schapire <a href="#ref-freund1999adaptive">1999</a>)</span>. In 2000, Friedman related AdaBoost to important statistical concepts (e.g., loss functions and additive modeling), which allowed him to generalize the boosting framework to regression problems and multiple loss functions <span class="citation">(J. H. Friedman <a href="#ref-friedman2001greedy">2001</a>)</span>. This led to the typical GBM model that we think of today and that most modern implementations are built on.</p>
+<div id="hyper-gbm1" class="section level3">
+<h3><span class="header-section-number">12.3.1</span> Hyperparameters</h3>
+<p>A simple GBM model contains two categories of hyperparameters: <em>boosting hyperparameters</em> and <em>tree-specific hyperparameters</em>. The two main boosting hyperparameters include:</p>
+<ul>
+<li><strong>Number of trees</strong>: The total number of trees in the sequence or ensemble. The averaging of independently grown trees in bagging and random forests makes it very difficult to overfit with too many trees. However, GBMs function differently as each tree is grown in sequence to fix up the past tree’s mistakes. For example, in regression, GBMs will chase residuals as long as you allow them to. Also, depending on the values of the other hyperparameters, GBMs often require many trees (it is not uncommon to have many thousands of trees) but since they can easily overfit we must find the optimal number of trees that minimize the loss function of interest with cross validation.</li>
+<li><strong>Learning rate</strong>: Determines the contribution of each tree on the final outcome and controls how quickly the algorithm proceeds down the gradient descent (learns); see Figure <a href="gbm.html#fig:gradient-descent-fig">12.3</a>. Values range from 0–1 with typical values between 0.001–0.3. Smaller values make the model robust to the specific characteristics of each individual tree, thus allowing it to generalize well. Smaller values also make it easier to stop prior to overfitting; however, they increase the risk of not reaching the optimum with a fixed number of trees and are more computationally demanding. This hyperparameter is also called <em>shrinkage</em>. Generally, the smaller this value, the more accurate the model can be but also will require more trees in the sequence.</li>
+</ul>
+<p>The two main tree hyperparameters in a simple GBM model include:</p>
+<ul>
+<li><strong>Tree depth</strong>: Controls the depth of the individual trees. Typical values range from a depth of 3–8 but it is not uncommon to see a tree depth of 1 <span class="citation">(J. Friedman, Hastie, and Tibshirani <a href="#ref-esl">2001</a>)</span>. Smaller depth trees such as decision stumps are computationally efficient (but require more trees); however, higher depth trees allow the algorithm to capture unique interactions but also increase the risk of over-fitting. Note that larger <span class="math inline">\(n\)</span> or <span class="math inline">\(p\)</span> training data sets are more tolerable to deeper trees.</li>
+<li><strong>Minimum number of observations in terminal nodes</strong>: Also, controls the complexity of each tree. Since we tend to use shorter trees this rarely has a large impact on performance. Typical values range from 5–15 where higher values help prevent a model from learning relationships which might be highly specific to the particular sample selected for a tree (overfitting) but smaller values can help with imbalanced target classes in classification problems.</li>
+</ul>
+</div>
+<div id="implementation-2" class="section level3">
+<h3><span class="header-section-number">12.3.2</span> Implementation</h3>
+<p>There are many packages that implement GBMs and GBM variants. You can find a fairly comprehensive list at the CRAN Machine Learning Task View: <a href="https://cran.r-project.org/web/views/MachineLearning.html" class="uri">https://cran.r-project.org/web/views/MachineLearning.html</a>. However, the most popular original R implementation of Friedman’s GBM algorithm <span class="citation">(J. H. Friedman <a href="#ref-friedman2001greedy">2001</a>; Friedman <a href="#ref-friedman2002stochastic">2002</a>)</span> is the <strong>gbm</strong> package.</p>
+<p><strong>gbm</strong> has two training functions: <code>gbm::gbm()</code> and <code>gbm::gbm.fit()</code>. The primary difference is that <code>gbm::gbm()</code> uses the formula interface to specify your model whereas <code>gbm::gbm.fit()</code> requires the separated <code>x</code> and <code>y</code> matrices; <code>gbm::gbm.fit()</code> is more efficient and recommended for advanced users.</p>
+<p>The default settings in <strong>gbm</strong> include a learning rate (<code>shrinkage</code>) of 0.001. This is a very small learning rate and typically requires a large number of trees to sufficiently minimize the loss function. However, <strong>gbm</strong> uses a default number of trees of 100, which is rarely sufficient. Consequently, we start with a learning rate of 0.1 and increase the number of trees to train. The default depth of each tree (<code>interaction.depth</code>) is 1, which means we are ensembling a bunch of decision stumps (i.e., we are not able to capture any interaction effects). For the Ames housing data set, we increase the tree depth to 3 and use the default value for minimum number of observations required in the trees terminal nodes (<code>n.minobsinnode</code>). Lastly, we set <code>cv.folds = 10</code> to perform a 10-fold CV.</p>
+<div class="warning">
+<p>
+This model takes a little over 2 minutes to run.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># run a basic GBM model</span>
+<span class="kw">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span>
+ames_gbm1 &lt;-<span class="st"> </span><span class="kw">gbm</span>(
+  <span class="dt">formula =</span> Sale_Price <span class="op">~</span><span class="st"> </span>.,
+  <span class="dt">data =</span> ames_train,
+  <span class="dt">distribution =</span> <span class="st">&quot;gaussian&quot;</span>,  <span class="co"># SSE loss function</span>
+  <span class="dt">n.trees =</span> <span class="dv">5000</span>,
+  <span class="dt">shrinkage =</span> <span class="fl">0.1</span>,
+  <span class="dt">interaction.depth =</span> <span class="dv">3</span>,
+  <span class="dt">n.minobsinnode =</span> <span class="dv">10</span>,
+  <span class="dt">cv.folds =</span> <span class="dv">10</span>
+)
+
+<span class="co"># find index for number trees with minimum CV error</span>
+best &lt;-<span class="st"> </span><span class="kw">which.min</span>(ames_gbm1<span class="op">$</span>cv.error)
+
+<span class="co"># get MSE and compute RMSE</span>
+<span class="kw">sqrt</span>(ames_gbm1<span class="op">$</span>cv.error[best])
+<span class="co">## [1] 23240.38</span></code></pre>
+<p>Our results show a cross-validated SSE of 23240 which was achieved with 1219 trees.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot error curve</span>
+<span class="kw">gbm.perf</span>(ames_gbm1, <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:basic-gbm-error-curve"></span>
+<img src="10-gradient-boosting_files/figure-html/basic-gbm-error-curve-1.png" alt="Training and cross-validated MSE as n trees are added to the GBM algorithm." width="480" />
+<p class="caption">
+Figure 12.6: Training and cross-validated MSE as n trees are added to the GBM algorithm.
+</p>
+</div>
+<pre><code>## [1] 1219</code></pre>
+</div>
+<div id="tuning-strategy" class="section level3">
+<h3><span class="header-section-number">12.3.3</span> General tuning strategy</h3>
+<p>Unlike random forests, GBMs can have high variability in accuracy dependent on their hyperparameter settings <span class="citation">(Probst, Bischl, and Boulesteix <a href="#ref-probst2018tunability">2018</a>)</span>. So tuning can require much more strategy than a random forest model. Often, a good approach is to:</p>
+<ol style="list-style-type: decimal">
+<li>Choose a relatively high learning rate. Generally the default value of 0.1 works but somewhere between 0.05–0.2 should work across a wide range of problems.<br />
+</li>
+<li>Determine the optimum number of trees for this learning rate.<br />
+</li>
+<li>Fix tree hyperparameters and tune learning rate and assess speed vs. performance.<br />
+</li>
+<li>Tune tree-specific parameters for decided learning rate.<br />
+</li>
+<li>Once tree-specific parameters have been found, lower the learning rate to assess for any improvements in accuracy.<br />
+</li>
+<li>Use final hyperparameter settings and increase CV procedures to get more robust estimates. Often, the above steps are performed with a simple validation procedure or 5-fold CV due to computational constraints. If you used <em>k</em>-fold CV throughout steps 1–5 then this step is not necessary.</li>
+</ol>
+<p>We already did (1)–(2) in the Ames example above with our first GBM model. Next, we’ll do (3) and asses the performance of various learning rate values between 0.005–0.3. Our results indicate that a learning rate of 0.05 sufficiently minimizes our loss function and requires 2375 trees. All our models take a little over 2 minutes to train so we don’t see any significant impacts in training time based on the learning rate.</p>
+<div class="warning">
+<p>
+The following grid search took us about 10 minutes.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create grid search</span>
+hyper_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(
+  <span class="dt">learning_rate =</span> <span class="kw">c</span>(<span class="fl">0.3</span>, <span class="fl">0.1</span>, <span class="fl">0.05</span>, <span class="fl">0.01</span>, <span class="fl">0.005</span>),
+  <span class="dt">RMSE =</span> <span class="ot">NA</span>,
+  <span class="dt">trees =</span> <span class="ot">NA</span>,
+  <span class="dt">time =</span> <span class="ot">NA</span>
+)
+
+<span class="co"># execute grid search</span>
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq_len</span>(<span class="kw">nrow</span>(hyper_grid))) {
+
+  <span class="co"># fit gbm</span>
+  <span class="kw">set.seed</span>(<span class="dv">123</span>)  <span class="co"># for reproducibility</span>
+  train_time &lt;-<span class="st"> </span><span class="kw">system.time</span>({
+    m &lt;-<span class="st"> </span><span class="kw">gbm</span>(
+      <span class="dt">formula =</span> Sale_Price <span class="op">~</span><span class="st"> </span>.,
+      <span class="dt">data =</span> ames_train,
+      <span class="dt">distribution =</span> <span class="st">&quot;gaussian&quot;</span>,
+      <span class="dt">n.trees =</span> <span class="dv">5000</span>, 
+      <span class="dt">shrinkage =</span> hyper_grid<span class="op">$</span>learning_rate[i], 
+      <span class="dt">interaction.depth =</span> <span class="dv">3</span>, 
+      <span class="dt">n.minobsinnode =</span> <span class="dv">10</span>,
+      <span class="dt">cv.folds =</span> <span class="dv">10</span> 
+   )
+  })
+  
+  <span class="co"># add SSE, trees, and training time to results</span>
+  hyper_grid<span class="op">$</span>RMSE[i]  &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">min</span>(m<span class="op">$</span>cv.error))
+  hyper_grid<span class="op">$</span>trees[i] &lt;-<span class="st"> </span><span class="kw">which.min</span>(m<span class="op">$</span>cv.error)
+  hyper_grid<span class="op">$</span>Time[i]  &lt;-<span class="st"> </span>train_time[[<span class="st">&quot;elapsed&quot;</span>]]
+
+}
+
+<span class="co"># results</span>
+<span class="kw">arrange</span>(hyper_grid, RMSE)
+<span class="co">##   learning_rate  RMSE trees  time</span>
+<span class="co">## 1         0.050 21382  2375 129.5</span>
+<span class="co">## 2         0.010 21828  4982 126.0</span>
+<span class="co">## 3         0.100 22252   874 137.6</span>
+<span class="co">## 4         0.005 23136  5000 136.8</span>
+<span class="co">## 5         0.300 24454   427 139.9</span></code></pre>
+<p>Next, we’ll set our learning rate at the optimal level (0.05) and tune the tree specific hyperparameters (<code>interaction.depth</code> and <code>n.minobsinnode</code>). Adjusting the tree-specific parameters provides us with an additional 600 reduction in RMSE.</p>
+<div class="warning">
+<p>
+This grid search takes about 30 minutes.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># search grid</span>
+hyper_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(
+  <span class="dt">n.trees =</span> <span class="dv">6000</span>,
+  <span class="dt">shrinkage =</span> <span class="fl">0.01</span>,
+  <span class="dt">interaction.depth =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>),
+  <span class="dt">n.minobsinnode =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>)
+)
+
+<span class="co"># create model fit function</span>
+model_fit &lt;-<span class="st"> </span><span class="cf">function</span>(n.trees, shrinkage, interaction.depth, n.minobsinnode) {
+  <span class="kw">set.seed</span>(<span class="dv">123</span>)
+  m &lt;-<span class="st"> </span><span class="kw">gbm</span>(
+    <span class="dt">formula =</span> Sale_Price <span class="op">~</span><span class="st"> </span>.,
+    <span class="dt">data =</span> ames_train,
+    <span class="dt">distribution =</span> <span class="st">&quot;gaussian&quot;</span>,
+    <span class="dt">n.trees =</span> n.trees,
+    <span class="dt">shrinkage =</span> shrinkage,
+    <span class="dt">interaction.depth =</span> interaction.depth,
+    <span class="dt">n.minobsinnode =</span> n.minobsinnode,
+    <span class="dt">cv.folds =</span> <span class="dv">10</span>
+  )
+  <span class="co"># compute RMSE</span>
+  <span class="kw">sqrt</span>(<span class="kw">min</span>(m<span class="op">$</span>cv.error))
+}
+
+<span class="co"># perform search grid with functional programming</span>
+hyper_grid<span class="op">$</span>rmse &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw">pmap_dbl</span>(
+  hyper_grid,
+  <span class="op">~</span><span class="st"> </span><span class="kw">model_fit</span>(
+    <span class="dt">n.trees =</span> ..<span class="dv">1</span>,
+    <span class="dt">shrinkage =</span> ..<span class="dv">2</span>,
+    <span class="dt">interaction.depth =</span> ..<span class="dv">3</span>,
+    <span class="dt">n.minobsinnode =</span> ..<span class="dv">4</span>
+    )
+)
+
+<span class="co"># results</span>
+<span class="kw">arrange</span>(hyper_grid, rmse)
+<span class="co">##   n.trees shrinkage interaction.depth n.minobsinnode  rmse</span>
+<span class="co">## 1    4000      0.05                 5              5 20699</span>
+<span class="co">## 2    4000      0.05                 3              5 20723</span>
+<span class="co">## 3    4000      0.05                 7              5 21021</span>
+<span class="co">## 4    4000      0.05                 3             10 21382</span>
+<span class="co">## 5    4000      0.05                 5             10 21915</span>
+<span class="co">## 6    4000      0.05                 5             15 21924</span>
+<span class="co">## 7    4000      0.05                 3             15 21943</span>
+<span class="co">## 8    4000      0.05                 7             10 21999</span>
+<span class="co">## 9    4000      0.05                 7             15 22348</span></code></pre>
+<p>After this procedure, we took our top model’s hyperparameter settings, reduced the learning rate to 0.005, and increased the number of trees (8000) to see if we got any additional improvement in accuracy. We experienced no improvement in our RMSE and our training time increased to nearly 6 minutes.</p>
+</div>
+</div>
+<div id="stochastic-gbms" class="section level2">
+<h2><span class="header-section-number">12.4</span> Stochastic GBMs</h2>
+<p>An important insight made by Breiman (<span class="citation">Breiman (<a href="#ref-breiman1996bagging">1996</a><a href="#ref-breiman1996bagging">a</a>)</span>; <span class="citation">Breiman (<a href="#ref-breiman2001random">2001</a>)</span>) in developing his bagging and random forest algorithms was that training the algorithm on a random subsample of the training data set offered additional reduction in tree correlation and, therefore, improvement in prediction accuracy. <span class="citation">Friedman (<a href="#ref-friedman2002stochastic">2002</a>)</span> used this same logic and updated the boosting algorithm accordingly. This procedure is known as <em>stochastic gradient boosting</em> and, as illustrated in Figure <a href="gbm.html#fig:stochastic-gradient-descent-fig">12.5</a>, helps reduce the chances of getting stuck in local minimas, plateaus, and other irregular terrain of the loss function so that we may find a near global optimum.</p>
+<div id="hyper-gbm2" class="section level3">
+<h3><span class="header-section-number">12.4.1</span> Stochastic hyperparameters</h3>
+<p>There are a few variants of stochastic gradient boosting that can be used, all of which have additional hyperparameters:</p>
+<ul>
+<li>Subsample rows before creating each tree (available in <strong>gbm</strong>, <strong>h2o</strong>, &amp; <strong>xgboost</strong>)</li>
+<li>Subsample columns before creating each tree (<strong>h2o</strong> &amp; <strong>xgboost</strong>)</li>
+<li>Subsample columns before considering each split in each tree (<strong>h2o</strong> &amp; <strong>xgboost</strong>)</li>
+</ul>
+<p>Generally, aggressive subsampling of rows, such as selecting only 50% or less of the training data, has shown to be beneficial and typical values range between 0.5–0.8. Subsampling of columns and the impact to performance largely depends on the nature of the data and if there is strong multicollinearity or a lot of noisy features. Similar to the <span class="math inline">\(m_{try}\)</span> parameter in random forests (Section <a href="random-forest.html#mtry">11.4.2</a>), if there are fewer relevant predictors (more noisy data) higher values of column subsampling tends to perform better because it makes it more likely to select those features with the strongest signal. When there are many relevant predictors, a lower values of column subsampling tends to perform well.</p>
+<p>When adding in a stochastic procedure, you can either include it in step 4) in the general tuning strategy above (Section <a href="gbm.html#tuning-strategy">12.3.3</a>), or once you’ve found the optimal basic model (after 6)). In our experience, we have not seen strong interactions between the stochastic hyperparameters and the other boosting and tree-specific hyperparameters.</p>
+</div>
+<div id="stochastic-gbm-h2o" class="section level3">
+<h3><span class="header-section-number">12.4.2</span> Implementation</h3>
+<p>The following uses <strong>h2o</strong> to implement a stochastic GBM. We use the optimal hyperparameters found in the previous section and build onto this by assessing a range of values for subsampling rows and columns before each tree is built, and subsampling columns before each split. To speed up training we use early stopping for the individual GBM modeling process and also add a stochastic search criteria.</p>
+<div class="warning">
+<p>
+This grid search ran for the entire 60 minutes and evaluated 18 of the possible 27 models.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># refined hyperparameter grid</span>
+hyper_grid &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">sample_rate =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),              <span class="co"># row subsampling</span>
+  <span class="dt">col_sample_rate =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>),          <span class="co"># col subsampling for each split</span>
+  <span class="dt">col_sample_rate_per_tree =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>)  <span class="co"># col subsampling for each tree</span>
+)
+
+<span class="co"># random grid search strategy</span>
+search_criteria &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">strategy =</span> <span class="st">&quot;RandomDiscrete&quot;</span>,
+  <span class="dt">stopping_metric =</span> <span class="st">&quot;mse&quot;</span>,
+  <span class="dt">stopping_tolerance =</span> <span class="fl">0.001</span>,   
+  <span class="dt">stopping_rounds =</span> <span class="dv">10</span>,         
+  <span class="dt">max_runtime_secs =</span> <span class="dv">60</span><span class="op">*</span><span class="dv">60</span>      
+)
+
+<span class="co"># perform grid search </span>
+grid &lt;-<span class="st"> </span><span class="kw">h2o.grid</span>(
+  <span class="dt">algorithm =</span> <span class="st">&quot;gbm&quot;</span>,
+  <span class="dt">grid_id =</span> <span class="st">&quot;gbm_grid&quot;</span>,
+  <span class="dt">x =</span> predictors, 
+  <span class="dt">y =</span> response,
+  <span class="dt">training_frame =</span> train_h2o,
+  <span class="dt">hyper_params =</span> hyper_grid,
+  <span class="dt">ntrees =</span> <span class="dv">6000</span>,
+  <span class="dt">learn_rate =</span> <span class="fl">0.01</span>,
+  <span class="dt">max_depth =</span> <span class="dv">7</span>,
+  <span class="dt">min_rows =</span> <span class="dv">5</span>,
+  <span class="dt">nfolds =</span> <span class="dv">10</span>,
+  <span class="dt">stopping_rounds =</span> <span class="dv">10</span>,
+  <span class="dt">stopping_tolerance =</span> <span class="dv">0</span>,
+  <span class="dt">search_criteria =</span> search_criteria,
+  <span class="dt">seed =</span> <span class="dv">123</span>
+)
+
+<span class="co"># collect the results and sort by our model performance metric of choice</span>
+grid_perf &lt;-<span class="st"> </span><span class="kw">h2o.getGrid</span>(
+  <span class="dt">grid_id =</span> <span class="st">&quot;gbm_grid&quot;</span>, 
+  <span class="dt">sort_by =</span> <span class="st">&quot;mse&quot;</span>, 
+  <span class="dt">decreasing =</span> <span class="ot">FALSE</span>
+)
+
+grid_perf
+<span class="co">## H2O Grid Details</span>
+<span class="co">## ================</span>
+<span class="co">## </span>
+<span class="co">## Grid ID: gbm_grid </span>
+<span class="co">## Used hyper parameters: </span>
+<span class="co">##   -  col_sample_rate </span>
+<span class="co">##   -  col_sample_rate_per_tree </span>
+<span class="co">##   -  sample_rate </span>
+<span class="co">## Number of models: 18 </span>
+<span class="co">## Number of failed models: 0 </span>
+<span class="co">## </span>
+<span class="co">## Hyper-Parameter Search Summary: ordered by increasing mse</span>
+<span class="co">##    col_sample_rate col_sample_rate_per_tree sample_rate         model_ids                  mse</span>
+<span class="co">## 1              0.5                      0.5         0.5  gbm_grid_model_8  4.462965966345138E8</span>
+<span class="co">## 2              0.5                      1.0         0.5  gbm_grid_model_3  4.568248274796835E8</span>
+<span class="co">## 3              0.5                     0.75        0.75 gbm_grid_model_12 4.6466647244785947E8</span>
+<span class="co">## 4             0.75                      0.5        0.75  gbm_grid_model_5  4.689665768861389E8</span>
+<span class="co">## 5              1.0                     0.75         0.5 gbm_grid_model_14 4.7010349266737276E8</span>
+<span class="co">## 6              0.5                      0.5        0.75 gbm_grid_model_10  4.713882927949245E8</span>
+<span class="co">## 7             0.75                      1.0         0.5  gbm_grid_model_4  4.729884840420368E8</span>
+<span class="co">## 8              1.0                      1.0         0.5  gbm_grid_model_1  4.770705550988762E8</span>
+<span class="co">## 9              1.0                     0.75        0.75  gbm_grid_model_6 4.9292332262147874E8</span>
+<span class="co">## 10            0.75                      1.0        0.75 gbm_grid_model_13  4.985715082289563E8</span>
+<span class="co">## 11            0.75                      0.5         1.0  gbm_grid_model_2 5.0271257831462187E8</span>
+<span class="co">## 12            0.75                     0.75        0.75 gbm_grid_model_15 5.0981695262733763E8</span>
+<span class="co">## 13            0.75                     0.75         1.0  gbm_grid_model_9 5.3137490858680266E8</span>
+<span class="co">## 14            0.75                      1.0         1.0 gbm_grid_model_11   5.77518690995319E8</span>
+<span class="co">## 15             1.0                      1.0         1.0  gbm_grid_model_7  6.037512241688542E8</span>
+<span class="co">## 16             1.0                     0.75         1.0 gbm_grid_model_16 1.9742225720119803E9</span>
+<span class="co">## 17             0.5                      1.0        0.75 gbm_grid_model_17 4.1339991380839005E9</span>
+<span class="co">## 18             1.0                      0.5         1.0 gbm_grid_model_18  5.949489361558916E9</span></code></pre>
+<p>Our grid search highlights some important results. Random sampling from the rows for each tree and randomly sampling features before each split appears to positively impact performance. It is not definitive if sampling features before each tree has an impact. Furthermore, the best sampling values are very low (0.5); a further grid search may be beneficial to evaluate even lower values.</p>
+<p>The below code chunk extracts the best performing model. In this particular case, we do not see additional improvement in our 10-fold CV RMSE over the best non-stochastic GBM model.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Grab the model_id for the top model, chosen by cross validation error</span>
+best_model_id &lt;-<span class="st"> </span>grid_perf<span class="op">@</span>model_ids[[<span class="dv">1</span>]]
+best_model &lt;-<span class="st"> </span><span class="kw">h2o.getModel</span>(best_model_id)
+
+<span class="co"># Now let’s get performance metrics on the best model</span>
+<span class="kw">h2o.performance</span>(<span class="dt">model =</span> best_model, <span class="dt">xval =</span> <span class="ot">TRUE</span>)
+<span class="co">## H2ORegressionMetrics: gbm</span>
+<span class="co">## ** Reported on cross-validation data. **</span>
+<span class="co">## ** 10-fold cross-validation on training data (Metrics computed for combined holdout predictions) **</span>
+<span class="co">## </span>
+<span class="co">## MSE:  446296597</span>
+<span class="co">## RMSE:  21125.73</span>
+<span class="co">## MAE:  13045.95</span>
+<span class="co">## RMSLE:  0.1240542</span>
+<span class="co">## Mean Residual Deviance :  446296597</span></code></pre>
+</div>
+</div>
+<div id="xgboost" class="section level2">
+<h2><span class="header-section-number">12.5</span> XGBoost</h2>
+<p>Extreme gradient boosting (XGBoost) is an optimized distributed gradient boosting library that is designed to be efficient, flexible, and portable across multiple languages <span class="citation">(Chen and Guestrin <a href="#ref-xgboost-paper">2016</a>)</span>. Although XGBoost provides the same boosting and tree-based hyperparameter options illustrated in the previous sections, it also provides a few advantages over traditional boosting such as:</p>
+<ul>
+<li><strong>Regularization</strong>: XGBoost offers additional regularization hyperparameters, which we will discuss shortly, that provides added protection against overfitting.</li>
+<li><strong>Early stopping</strong>: Similar to <strong>h2o</strong>, XGBoost implements early stopping so that we can stop model assessment when additional trees offer no improvement.</li>
+<li><strong>Parallel Processing</strong>: Since gradient boosting is sequential in nature it is extremely difficult to parallelize. XGBoost has implemented procedures to support GPU and Spark compatibility which allows you to fit gradient boosting using powerful distributed processing engines.</li>
+<li><strong>Loss functions</strong>: XGBoost allows users to define and optimize gradient boosting models using custom objective and evaluation criteria.</li>
+<li><strong>Continue with existing model</strong>: A user can train an XGBoost model, save the results, and later on return to that model and continue building onto the results. Whether you shut down for the day, wanted to review intermediate results, or came up with additional hyperparameter settings to evaluate, this allows you to continue training your model without starting from scratch.</li>
+<li><strong>Different base learners</strong>: Most GBM implementations are built with decision trees but XGBoost also provides boosted generalized linear models.</li>
+<li><strong>Multiple languages</strong>: XGBoost offers implementations in R, Python, Julia, Scala, Java, and C++.</li>
+</ul>
+<p>In addition to being offered across multiple languages, XGboost can be implemented multiple ways within R. The main R implementation is the <strong>xgboost</strong> package; however, as illustrated throughout many chapters one can also use <strong>caret</strong> as a meta engine to implement XGBoost. The <strong>h2o</strong> package also offers an implementation of XGBoost. In this chapter we’ll demonstrate the <strong>xgboost</strong> package.</p>
+<div id="xgboost-hyperparameters" class="section level3">
+<h3><span class="header-section-number">12.5.1</span> XGBoost hyperparameters</h3>
+<p>As previously mentioned, <strong>xgboost</strong> provides the traditional boosting and tree-based hyperparameters we discussed in Sections <a href="gbm.html#hyper-gbm1">12.3.1</a> and <a href="gbm.html#hyper-gbm2">12.4.1</a>. However, <strong>xgboost</strong> also provides additional hyperparameters that can help reduce the chances of overfitting, leading to less prediction variability and, therefore, improved accuracy.</p>
+<div id="xgb-regularization" class="section level4">
+<h4><span class="header-section-number">12.5.1.1</span> Regularization</h4>
+<p><strong>xgboost</strong> provides multiple regularization parameters to help reduce model complexity and guard against overfitting. The first, <code>gamma</code>, is a pseudo-regularization hyperparameter known as a Lagrangian multiplier and controls the complexity of a given tree. <code>gamma</code> specifies a minimum loss reduction required to make a further partition on a leaf node of the tree. When <code>gamma</code> is specified, <strong>xgboost</strong> will grow the tree to the max depth specified but then prune the tree to find and remove splits that do not meet the specified <code>gamma</code>. <code>gamma</code> tends to be worth exploring as your trees in your GBM become deeper and when you see a significant difference between the train and test CV error. The value of <code>gamma</code> ranges from <span class="math inline">\(0-\infty\)</span> (0 means no constraint while large numbers mean a higher regularization). What quantifies as a large <code>gamma</code> value is dependent on the loss function but generally lower values between 1–20 will do if <code>gamma</code> is influential.</p>
+<p>Two more traditional regularization parameters include <code>alpha</code> and <code>lambda</code>. <code>alpha</code> provides an <span class="math inline">\(L_1\)</span> regularization (reference Section <a href="regularized-regression.html#lasso">6.2.2</a>) and <code>lambda</code> provides an <span class="math inline">\(L_2\)</span> regularization (reference Section <a href="regularized-regression.html#ridge">6.2.1</a>). Setting both of these to greater than 0 results in an elastic net regularization; similar to <code>gamma</code>, these parameters can range from <span class="math inline">\(0-\infty\)</span>. These regularization parameters limits how extreme the weights (or influence) of the leaves in a tree can become.</p>
+<p>All three hyperparameters (<code>gamma</code>, <code>alpha</code>, <code>lambda</code>) work to constrain model complexity and reduce overfitting. Although <code>gamma</code> is more commonly implemented, your tuning strategy should explore the impact of all three. Figure <a href="gbm.html#fig:xgboost-learning-curve">12.7</a> illustrates how regularization can make an overfit model more conservative on the training data which, in some circumstances, can result in improvements to the validation error.</p>
+<div class="figure" style="text-align: center"><span id="fig:xgboost-learning-curve"></span>
+<img src="10-gradient-boosting_files/figure-html/xgboost-learning-curve-1.png" alt="When a GBM model significantly overfits to the training data (blue), adding regularization (dotted line) causes the model to be more conservative on the training data, which can improve the cross-validated test error (red)." width="576" />
+<p class="caption">
+Figure 12.7: When a GBM model significantly overfits to the training data (blue), adding regularization (dotted line) causes the model to be more conservative on the training data, which can improve the cross-validated test error (red).
+</p>
+</div>
+</div>
+<div id="dropout" class="section level4">
+<h4><span class="header-section-number">12.5.1.2</span> Dropout</h4>
+<p>Dropout is an alternative approach to reduce overfitting and can loosely be described as regularization. The dropout approach developed by <span class="citation">Srivastava et al. (<a href="#ref-JMLR:v15:srivastava14a">2014</a><a href="#ref-JMLR:v15:srivastava14a">a</a>)</span> has been widely employed in deep learnings to prevent deep neural networks from overfitting (see Section <a href="deep-learning.html#dl-regularization">13.7.3</a>). Dropout can also be used to address overfitting in GBMs. When constructing a GBM, the first few trees added at the beginning of the ensemble typically dominate the model performance while trees added later typically improve the prediction for only a small subset of the feature space. This often increases the risk of overfitting and the idea of dropout is to build an ensemble by randomly dropping trees in the boosting sequence. This is commonly referred to as DART <span class="citation">(Rashmi and Gilad-Bachrach <a href="#ref-rashmi2015dart">2015</a>)</span> since it was initially explored in the context of <em>Mutliple Additive Regression Trees</em> (MART); DART refers to <em>Dropout Additive Regression Trees</em>. The percentage of dropouts is another regularization parameter.</p>
+<p>Typically, when <code>gamma</code>, <code>alpha</code>, or <code>lambda</code> cannot help to control overfitting, exploring DART hyperparameters would be the next best option.<a href="#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a></p>
+</div>
+</div>
+<div id="xgb-tuning-strategy" class="section level3">
+<h3><span class="header-section-number">12.5.2</span> Tuning strategy</h3>
+<p>The general tuning strategy for exploring <strong>xgboost</strong> hyperparameters builds onto the basic and stochastic GBM tuning strategies:</p>
+<ol style="list-style-type: decimal">
+<li>Crank up the number of trees and tune learning rate with early stopping</li>
+<li>Tune tree-specific hyperparameters</li>
+<li>Explore stochastic GBM attributes</li>
+<li>If substantial overfitting occurs (e.g., large differences between train and CV error) explore regularization hyperparameters</li>
+<li>If you find hyperparameter values that are substantially different from default settings, be sure to retune the learning rate</li>
+<li>Obtain final “optimal” model</li>
+</ol>
+<p>Running an XGBoost model with <strong>xgboost</strong> requires some additional data preparation. <strong>xgboost</strong> requires a matrix input for the features and the response to be a vector. Consequently, to provide a matrix input of the features we need to encode our categorical variables numerically (i.e. one-hot encoding, label encoding). The following numerically label encodes all categorical features and converts the training data frame to a matrix.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(recipes)
+xgb_prep &lt;-<span class="st"> </span><span class="kw">recipe</span>(Sale_Price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> ames_train) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">step_integer</span>(<span class="kw">all_nominal</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">prep</span>(<span class="dt">training =</span> ames_train, <span class="dt">retain =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">juice</span>()
+
+X &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(xgb_prep[<span class="kw">setdiff</span>(<span class="kw">names</span>(xgb_prep), <span class="st">&quot;Sale_Price&quot;</span>)])
+Y &lt;-<span class="st"> </span>xgb_prep<span class="op">$</span>Sale_Price</code></pre>
+
+<div class="tip">
+<strong>xgboost</strong> will except three different kinds of matrices for the features: ordinary R matrix, sparse matrices from the <strong>Matrix</strong> package, or <strong>xgboost</strong>’s internal <code>xgb.DMatrix</code> objects. See <code>?xgboost::xgboost</code> for details.
+</div>
+
+<p>Next, we went through a series of grid searches similar to the previous sections and found the below model hyperparameters (provided via the <code>params</code> argument) to perform quite well. Our RMSE is slightly lower than the best regular and stochastic GBM models thus far.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
+ames_xgb &lt;-<span class="st"> </span><span class="kw">xgb.cv</span>(
+  <span class="dt">data =</span> X,
+  <span class="dt">label =</span> Y,
+  <span class="dt">nrounds =</span> <span class="dv">6000</span>,
+  <span class="dt">objective =</span> <span class="st">&quot;reg:linear&quot;</span>,
+  <span class="dt">early_stopping_rounds =</span> <span class="dv">50</span>, 
+  <span class="dt">nfold =</span> <span class="dv">10</span>,
+  <span class="dt">params =</span> <span class="kw">list</span>(
+    <span class="dt">eta =</span> <span class="fl">0.1</span>,
+    <span class="dt">max_depth =</span> <span class="dv">3</span>,
+    <span class="dt">min_child_weight =</span> <span class="dv">3</span>,
+    <span class="dt">subsample =</span> <span class="fl">0.8</span>,
+    <span class="dt">colsample_bytree =</span> <span class="fl">1.0</span>),
+  <span class="dt">verbose =</span> <span class="dv">0</span>
+)  
+
+<span class="co"># minimum test CV RMSE</span>
+<span class="kw">min</span>(ames_xgb<span class="op">$</span>evaluation_log<span class="op">$</span>test_rmse_mean)
+<span class="co">## [1] 20488</span></code></pre>
+<p>Next, we assess if overfitting is limiting our model’s performance by performing a grid search that examines various regularization parameters (<code>gamma</code>, <code>lambda</code>, and <code>alpha</code>). Our results indicate that the best performing models use <code>lambda</code> equal to 1 and it doesn’t appear that <code>alpha</code> or <code>gamma</code> have any consistent patterns. However, even when <code>lambda</code> equals 1, our CV RMSE has no improvement over our previous XGBoost model.</p>
+<div class="warning">
+<p>
+Due to the low learning rate (<code>eta</code>), this cartesian grid search takes a long time. We stopped the search after 2 hours and only 98 of the 245 models had completed.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># hyperparameter grid</span>
+hyper_grid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(
+  <span class="dt">eta =</span> <span class="fl">0.01</span>,
+  <span class="dt">max_depth =</span> <span class="dv">3</span>, 
+  <span class="dt">min_child_weight =</span> <span class="dv">3</span>,
+  <span class="dt">subsample =</span> <span class="fl">0.5</span>, 
+  <span class="dt">colsample_bytree =</span> <span class="fl">0.5</span>,
+  <span class="dt">gamma =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>),
+  <span class="dt">lambda =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">1e-2</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>),
+  <span class="dt">alpha =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">1e-2</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>),
+  <span class="dt">rmse =</span> <span class="dv">0</span>,          <span class="co"># a place to dump RMSE results</span>
+  <span class="dt">trees =</span> <span class="dv">0</span>          <span class="co"># a place to dump required number of trees</span>
+)
+
+<span class="co"># grid search</span>
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq_len</span>(<span class="kw">nrow</span>(hyper_grid))) {
+  <span class="kw">set.seed</span>(<span class="dv">123</span>)
+  m &lt;-<span class="st"> </span><span class="kw">xgb.cv</span>(
+    <span class="dt">data =</span> X,
+    <span class="dt">label =</span> Y,
+    <span class="dt">nrounds =</span> <span class="dv">4000</span>,
+    <span class="dt">objective =</span> <span class="st">&quot;reg:linear&quot;</span>,
+    <span class="dt">early_stopping_rounds =</span> <span class="dv">50</span>, 
+    <span class="dt">nfold =</span> <span class="dv">10</span>,
+    <span class="dt">verbose =</span> <span class="dv">0</span>,
+    <span class="dt">params =</span> <span class="kw">list</span>( 
+      <span class="dt">eta =</span> hyper_grid<span class="op">$</span>eta[i], 
+      <span class="dt">max_depth =</span> hyper_grid<span class="op">$</span>max_depth[i],
+      <span class="dt">min_child_weight =</span> hyper_grid<span class="op">$</span>min_child_weight[i],
+      <span class="dt">subsample =</span> hyper_grid<span class="op">$</span>subsample[i],
+      <span class="dt">colsample_bytree =</span> hyper_grid<span class="op">$</span>colsample_bytree[i],
+      <span class="dt">gamma =</span> hyper_grid<span class="op">$</span>gamma[i], 
+      <span class="dt">lambda =</span> hyper_grid<span class="op">$</span>lambda[i], 
+      <span class="dt">alpha =</span> hyper_grid<span class="op">$</span>alpha[i]
+    ) 
+  )
+  hyper_grid<span class="op">$</span>rmse[i] &lt;-<span class="st"> </span><span class="kw">min</span>(m<span class="op">$</span>evaluation_log<span class="op">$</span>test_rmse_mean)
+  hyper_grid<span class="op">$</span>trees[i] &lt;-<span class="st"> </span>m<span class="op">$</span>best_iteration
+}
+
+<span class="co"># results</span>
+hyper_grid <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(rmse <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(rmse) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">glimpse</span>()
+<span class="co">## Observations: 98</span>
+<span class="co">## Variables: 10</span>
+<span class="co">## $ eta              &lt;dbl&gt; 0.01, 0.01, 0.01, 0.01, 0.01, 0.0…</span>
+<span class="co">## $ max_depth        &lt;dbl&gt; 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span>
+<span class="co">## $ min_child_weight &lt;dbl&gt; 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, …</span>
+<span class="co">## $ subsample        &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5…</span>
+<span class="co">## $ colsample_bytree &lt;dbl&gt; 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5…</span>
+<span class="co">## $ gamma            &lt;dbl&gt; 0, 1, 10, 100, 1000, 0, 1, 10, 10…</span>
+<span class="co">## $ lambda           &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …</span>
+<span class="co">## $ alpha            &lt;dbl&gt; 0.00, 0.00, 0.00, 0.00, 0.00, 0.1…</span>
+<span class="co">## $ rmse             &lt;dbl&gt; 20488, 20488, 20488, 20488, 20488…</span>
+<span class="co">## $ trees            &lt;dbl&gt; 3944, 3944, 3944, 3944, 3944, 381…</span></code></pre>
+<p>Once you’ve found the optimal hyperparameters, fit the final model with <code>xgb.train</code> or <code>xgboost</code>. Be sure to use the optimal number of trees found during cross validation. In our example, adding regularization provides no improvement so we exclude them in our final model.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># optimal parameter list</span>
+params &lt;-<span class="st"> </span><span class="kw">list</span>(
+  <span class="dt">eta =</span> <span class="fl">0.01</span>,
+  <span class="dt">max_depth =</span> <span class="dv">3</span>,
+  <span class="dt">min_child_weight =</span> <span class="dv">3</span>,
+  <span class="dt">subsample =</span> <span class="fl">0.5</span>,
+  <span class="dt">colsample_bytree =</span> <span class="fl">0.5</span>
+)
+
+<span class="co"># train final model</span>
+xgb.fit.final &lt;-<span class="st"> </span><span class="kw">xgboost</span>(
+  <span class="dt">params =</span> params,
+  <span class="dt">data =</span> X,
+  <span class="dt">label =</span> Y,
+  <span class="dt">nrounds =</span> <span class="dv">3944</span>,
+  <span class="dt">objective =</span> <span class="st">&quot;reg:linear&quot;</span>,
+  <span class="dt">verbose =</span> <span class="dv">0</span>
+)</code></pre>
+</div>
+</div>
+<div id="feature-interpretation-1" class="section level2">
+<h2><span class="header-section-number">12.6</span> Feature interpretation</h2>
+<p>Measuring GBM feature importance and effects follows the same construct as random forests. Similar to random forests, the <strong>gbm</strong> and <strong>h2o</strong> packages offer an impurity-based feature importance. <strong>xgboost</strong> actually provides three built-in measures for feature importance:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Gain</strong>: This is equivalent to the impurity measure in random forests (reference Section <a href="random-forest.html#rf-vip">11.6</a>) and is the most common model-centric metric to use.</li>
+<li><strong>Coverage</strong>: The Coverage metric quantifies the relative number of observations influenced by this feature. For example, if you have 100 observations, 4 features and 3 trees, and suppose <span class="math inline">\(x_1\)</span> is used to decide the leaf node for 10, 5, and 2 observations in <span class="math inline">\(tree_1\)</span>, <span class="math inline">\(tree_2\)</span> and <span class="math inline">\(tree_3\)</span> respectively; then the metric will count cover for this feature as <span class="math inline">\(10+5+2 = 17\)</span> observations. This will be calculated for all the 4 features and expressed as a percentage.</li>
+<li><strong>Frequency</strong>: The percentage representing the relative number of times a particular feature occurs in the trees of the model. In the above example, if <span class="math inline">\(x_1\)</span> was used for 2 splits, 1 split and 3 splits in each of <span class="math inline">\(tree_1\)</span>, <span class="math inline">\(tree_2\)</span> and <span class="math inline">\(tree_3\)</span> respectively; then the weightage for <span class="math inline">\(x_1\)</span> will be <span class="math inline">\(2+1+3=6\)</span>. The frequency for <span class="math inline">\(x_1\)</span> is calculated as its percentage weight over weights of all <span class="math inline">\(x_p\)</span> features.</li>
+</ol>
+<p>If we examine the top 10 influential features in our final model using the impurity (gain) metric, we see very similar results as we saw with our random forest model (Section <a href="random-forest.html#rf-vip">11.6</a>). The primary difference is we no longer see <code>Neighborhood</code> as a top influential feature, which is likely a result of how we label encoded the categorical features.</p>
+<div class="tip">
+<p>
+By default, <code>vip::vip()</code> uses the gain method for feature importance but you can assess the other types using the <code>type</code> argument. You can also use <code>xgboost::xgb.ggplot.importance()</code> to plot the various feature importance measures but you need to first run <code>xgb.importance()</code> on the final model.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># variable importance plot</span>
+vip<span class="op">::</span><span class="kw">vip</span>(xgb.fit.final) </code></pre>
+<div class="figure" style="text-align: center"><span id="fig:xgb-feature-importance"></span>
+<img src="10-gradient-boosting_files/figure-html/xgb-feature-importance-1.png" alt="Top 10 most important variables based on the impurity (gain) metric." width="672" />
+<p class="caption">
+Figure 12.8: Top 10 most important variables based on the impurity (gain) metric.
+</p>
+</div>
+</div>
+<div id="final-thoughts-7" class="section level2">
+<h2><span class="header-section-number">12.7</span> Final thoughts</h2>
+<p>GBMs are one of the most powerful ensemble algorithms that are often first-in-class with predictive accuracy. Although they are less intuitive and more computationally demanding than many other machine learning algorithms, they are essential to have in your toolbox.</p>
+<p>Although we discussed the most popular GBM algorithms, realize there are alternative algorithms not covered here. For example LightGBM <span class="citation">(Ke et al. <a href="#ref-ke2017lightgbm">2017</a>)</span> is a gradient boosting framework that focuses on <em>leaf-wise</em> tree growth versus the traditional level-wise tree growth. This means as a tree is grown deeper, it focuses on extending a single branch versus growing multiple branches (reference Figure <a href="DT.html#fig:decision-tree-terminology">9.2</a>. CatBoost <span class="citation">(Dorogush, Ershov, and Gulin <a href="#ref-dorogush2018catboost">2018</a>)</span> is another gradient boosting framework that focuses on using efficient methods for encoding categorical features during the gradient boosting process. Both frameworks are available in R.</p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-breiman1996bagging">
+<p>Breiman, Leo. 1996a. “Bagging Predictors.” <em>Machine Learning</em> 24 (2). Springer: 123–40.</p>
+</div>
+<div id="ref-breiman2001random">
+<p>Breiman, Leo. 2001. “Random Forests.” <em>Machine Learning</em> 45 (1). Springer: 5–32.</p>
+</div>
+<div id="ref-xgboost-paper">
+<p>Chen, Tianqi, and Carlos Guestrin. 2016. “XGBoost: A Scalable Tree Boosting System.” In <em>Proceedings of the 22nd Acm Sigkdd International Conference on Knowledge Discovery and Data Mining</em>, 785–94. KDD ’16. New York, NY, USA: ACM. <a href="https://doi.org/10.1145/2939672.2939785">https://doi.org/10.1145/2939672.2939785</a>.</p>
+</div>
+<div id="ref-xgboost-pkg">
+<p>Chen, Tianqi, Tong He, Michael Benesty, Vadim Khotilovich, Yuan Tang, Hyunsu Cho, Kailong Chen, et al. 2018. <em>Xgboost: Extreme Gradient Boosting</em>. <a href="https://CRAN.R-project.org/package=xgboost">https://CRAN.R-project.org/package=xgboost</a>.</p>
+</div>
+<div id="ref-dorogush2018catboost">
+<p>Dorogush, Anna Veronika, Vasily Ershov, and Andrey Gulin. 2018. “CatBoost: Gradient Boosting with Categorical Features Support.” <em>arXiv Preprint arXiv:1810.11363</em>.</p>
+</div>
+<div id="ref-freund1999adaptive">
+<p>Freund, Yoav, and Robert E Schapire. 1999. “Adaptive Game Playing Using Multiplicative Weights.” <em>Games and Economic Behavior</em> 29 (1-2). Elsevier: 79–103.</p>
+</div>
+<div id="ref-friedman2001greedy">
+<p>Friedman, Jerome H. 2001. “Greedy Function Approximation: A Gradient Boosting Machine.” <em>Annals of Statistics</em>. JSTOR, 1189–1232.</p>
+</div>
+<div id="ref-friedman2002stochastic">
+<p>Friedman, Jerome H. 2002. “Stochastic Gradient Boosting.” <em>Computational Statistics &amp; Data Analysis</em> 38 (4). Elsevier: 367–78.</p>
+</div>
+<div id="ref-esl">
+<p>Friedman, Jerome, Trevor Hastie, and Robert Tibshirani. 2001. <em>The Elements of Statistical Learning</em>. Vol. 1. Springer Series in Statistics New York, NY, USA:</p>
+</div>
+<div id="ref-gbm-pkg">
+<p>Greenwell, B, B Boehmke, J Cunningham, and GBM Developers. 2018. “Gbm: Generalized Boosted Regression Models.” <em>R Package Version 2.1</em> 4.</p>
+</div>
+<div id="ref-ke2017lightgbm">
+<p>Ke, Guolin, Qi Meng, Thomas Finley, Taifeng Wang, Wei Chen, Weidong Ma, Qiwei Ye, and Tie-Yan Liu. 2017. “Lightgbm: A Highly Efficient Gradient Boosting Decision Tree.” In <em>Advances in Neural Information Processing Systems</em>, 3146–54.</p>
+</div>
+<div id="ref-apm">
+<p>Kuhn, Max, and Kjell Johnson. 2013. <em>Applied Predictive Modeling</em>. Vol. 26. Springer.</p>
+</div>
+<div id="ref-probst2018tunability">
+<p>Probst, Philipp, Bernd Bischl, and Anne-Laure Boulesteix. 2018. “Tunability: Importance of Hyperparameters of Machine Learning Algorithms.” <em>arXiv Preprint arXiv:1802.09596</em>.</p>
+</div>
+<div id="ref-rashmi2015dart">
+<p>Rashmi, Korlakai Vinayak, and Ran Gilad-Bachrach. 2015. “DART: Dropouts Meet Multiple Additive Regression Trees.” In <em>AISTATS</em>, 489–97.</p>
+</div>
+<div id="ref-JMLR:v15:srivastava14a">
+<p>Srivastava, Nitish, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, and Ruslan Salakhutdinov. 2014a. “Dropout: A Simple Way to Prevent Neural Networks from Overfitting.” <em>Journal of Machine Learning Research</em> 15: 1929–58. <a href="http://jmlr.org/papers/v15/srivastava14a.html">http://jmlr.org/papers/v15/srivastava14a.html</a>.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="32">
+<li id="fn32"><p>Figures <a href="gbm.html#fig:gradient-descent-fig">12.3</a>, <a href="gbm.html#fig:learning-rate-fig">12.4</a>, and <a href="gbm.html#fig:stochastic-gradient-descent-fig">12.5</a> were inspired by <span class="citation">Géron (<a href="#ref-geron2017hands">2017</a>)</span> but completely re-written with our own code.<a href="gbm.html#fnref32" class="footnote-back">↩</a></p></li>
+<li id="fn33"><p>See the DART booster documentation on the XGBoost website for details: <a href="https://xgboost.readthedocs.io/en/latest/tutorials/dart.html" class="uri">https://xgboost.readthedocs.io/en/latest/tutorials/dart.html</a>.<a href="gbm.html#fnref33" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="random-forest.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="deep-learning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

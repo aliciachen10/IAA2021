@@ -1,0 +1,57 @@
+AWS Athena instructions:
+
+Make sure you're in N. Virginia region
+
+data/
+
+output/
+
+s3://faculty-demo0853/data/
+
+CREATE DATABASE workshop
+
+CREATE EXTERNAL TABLE IF NOT EXISTS workshop.airlinesratings (
+  `id` string,
+  `airline` string,
+  `date` string,
+  `location` string,
+  `rating` int,
+  `cabin` string,
+  `value` int,
+  `recommended` string,
+  `review` string
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+WITH SERDEPROPERTIES (
+  'serialization.format' = ',',
+  'field.delim' = ','
+) LOCATION 's3://athena-demo-2564/data/'
+TBLPROPERTIES ('has_encrypted_data'='false', "skip.header.line.count"="1");
+
+
+select * from workshop.airlinesratings;
+
+# Number of reviews by Airline
+
+select airline, count(*) as count from workshop.airlinesratings group by airline;
+
+# Average Rating by Airline
+
+select airline, avg(rating) as average from workshop.airlinesratings group by airline;
+
+#Average Rating by Airline and Cabin Type
+
+select airline, cabin, avg(rating) as average from workshop.airlinesratings group by airline, cabin;
+
+#Using functions in SQL
+
+SELECT UPPER(review) FROM workshop.airlinesratings limit 10;
+
+SELECT SUBSTRING(review,1,10) FROM workshop.airlinesratings limit 10;
+
+
+---
+
+SageMaker: conda install -c conda-forge s3fs==0.3.0
+
+!pip install sagemaker==1.72.1

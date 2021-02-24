@@ -1,0 +1,75 @@
+SARAH OCAMPO
+SEPTEMBER 9 2020
+
+---Question 1---
+select count(CustomerId) from test.customer;
+
+---Question 2---
+select count(CustomerId) from test.customer
+where city = "London";
+
+---Question 3---
+select count(CustomerId) from test.customer
+where Email like "%gmail%";
+
+---Question 4---
+select AlbumId, Title from test.album
+where Title like "K%"
+order by AlbumId desc;
+
+---Question 5---
+select AlbumID, Title, Name from test.album 
+join test.artist on album.ArtistId = artist.ArtistId
+where Title like "M%"
+order by AlbumId desc;
+
+---Question 6---
+select avg(UnitPrice), genreID from test.Track
+group by genreID
+order by genreID desc;
+
+---Question 7---
+select city from test.Customer
+union 
+select city from test.employee3;
+
+---Question 8---
+select city, count(city) from test.customer
+group by city
+union
+select city, count(city) from test.employee3
+group by city;
+
+---Question 9---
+select billingcity, avg(total) from test.invoice
+group by billingcity
+having avg(total) > 6;
+
+---Question 10---
+select billingcity, avg(total) from test.Invoice
+group by billingcity
+having avg(total) > (select avg(total) from test.invoice);
+
+---Question 11---
+select name, count(albumid) from test.artist
+join test.album on artist.artistid=album.artistid
+group by artist.name
+order by count(albumid) desc;
+
+---Question 12---
+
+
+/*NOTE: I HAD TO CALL IT ALL_DATA_CHECK BECAUSE IT WOULDN’T LET ME OVERRIDE MY MISTAKE TABLES*/
+
+create table test.all_data_check as 
+select track.name as TrackName, genre.name as GenreName, mediatype.name as MediaTypeName
+from test.track, test.genre, test.mediatype
+where track.MediaTypeId=mediatype.MediaTypeId and track.GenreId=genre.GenreId
+order by TrackName desc;
+
+select * from test.all_data_check;
+
+---Question 13---
+INSERT INTO TEST.GENRE
+(GenreId, Name)
+VALUES(26 , "Disco");

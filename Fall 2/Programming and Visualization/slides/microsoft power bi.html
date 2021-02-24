@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta charset="UTF-8" />
+
+    <!-- JQuery package -->
+
+    <link type="text/css" href="../../css/redmond/jquery-ui-1.10.2.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../js/jquery-ui-1.10.2.min.js"></script>
+
+    <!-- Style header for jQuery accordions -->
+
+    <style>
+      .ui-accordion-header {
+      font-family: 'Droid Sans', sans-serif;
+      font-style: normal;
+      }
+    </style>
+
+    <!-- Font awesome for circle-triangle play button -->
+
+    <script src="https://kit.fontawesome.com/424aae4947.js" crossorigin="anonymous"></script>
+
+    <!-- Google Code hyphenator -->
+
+    <script type="text/javascript" src="../../js/hyphenate.js"></script>
+
+    <!-- Google fonts stuff -->
+
+    <link rel="stylesheet" type="text/css"
+	  href="https://fonts.googleapis.com/css?family=Noto+Serif:400" />
+    <link rel="stylesheet" type="text/css"
+	  href="https://fonts.googleapis.com/css?family=Noto+Serif:400italic" />
+    <link rel="stylesheet" type="text/css"
+	  href="https://fonts.googleapis.com/css?family=Droid+Sans:400" />
+    <link rel="stylesheet" type="text/css"
+	  href="https://fonts.googleapis.com/css?family=Droid+Sans:700" />
+
+    <!-- Course page CSS and JS -->
+
+    <link type="text/css" href="../../css/course.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../js/mod-date.js"></script>
+    <script type="text/javascript" src="./js/msa-bi.js"></script>
+
+    <!-- Overrides for standard course CSS -->
+
+    <link type="text/css" href="msa-bi.css" rel="stylesheet" />
+
+
+    <title>Microsoft Power BI: Institute for Advanced
+    Analytics</title>
+  </head>
+
+  <body style="background-color: white" class="hyphenate">
+
+    <div style="
+		position: relative;
+		height: 450px;
+		background-image: url( 'figs/bi-logo.png' );
+		background-repeat: no-repeat;
+		background-position: center top;
+		">
+
+      <!-- NC State logo, upper-left corner -->
+
+      <div style="
+		  position: absolute;
+		  align: right;
+		  top: 10px;
+		  left: 10px;
+		  ">
+	<a target="_blank" href="https://www.ncsu.edu">
+	  <img src="figs/nc-state-logo-blue.png"
+	       style="
+		      border-style: none;
+		      -moz-box-shadow: 1px 1px 8px #646464;
+		      -webkit-box-shadow: 1px 1px 8px #646464;
+		      box-shadow: 1px 1px 8px #646464;
+		      " alt="nc-state logo">
+	</a>
+      </div>
+
+      <!-- Power BI text, lower-left corner -->
+
+      <div style="
+		  position: absolute;
+		  bottom: 10px;
+		  left: 10px;
+		  font-family: 'Trebuchet MS', Helvetica, sans-serif;
+		  font-size: 16pt;
+		  font-weight: normal;
+		  color: #646464;
+		  ">
+	<div style="line-height: 90%;">Microsoft Power BI</div>
+	<div style="font-size: 10pt;">
+	  <a target="_blank" href="http://www.csc.ncsu.edu/faculty/healey">
+	    <i>Christopher G. Healey</i>
+	  </a>
+	</div>
+      </div>
+    </div>
+
+    <!-- Spacer after image of one "line" -->
+
+    <div style="height: 1em;"></div>
+
+    <!-- Navigation toolbar -->
+
+    <div id="navWrap">
+      <div id="nav">
+	<ul id="nav-list">
+	  <li id="bi-intro">Introduction
+	  <li id="bi-setup">Setup
+	  <li id="bi-desktop">BI Desktop
+	  <li id="bi-dot-map">Dot Map
+	  <li id="bi-scatterplot">Scatterplot
+	  <li id="bi-linegraph">Line Graph
+	  <li id="bi-dashboard">Dashboard
+	  <li id="bi-publish">Publishing
+	</ul>
+      </div>
+
+      <div id="nav-footer">
+      </div>
+    </div>
+
+
+<h2 id="intro">Introduction</h2>
+
+<p>
+This module will introduce you to <a target="_blank"
+href="https://powerbi.microsoft.com/en-us">Microsoft Power BI</a>
+(BI), a business intelligence platform designed to provide
+visualization dashboards, cloud-based collaboration, and
+multi-platform distribution across workstations and phones. We will
+work through examples on loading data from Excel worksheets,
+visualizing the data using different methods, and integrating the
+visualizations into an interactive BI dashboard.
+</p>
+
+<h3>What is Microsoft Power BI?</h3>
+
+<p>
+Microsoft Power BI (Business Intelligence) is a collection of tools
+designed to manage, query, and visualize data. The following six
+components are the ones you are most likely to use, although there are
+others.
+
+<ul>
+
+<li><b><a target="_blank"
+href="https://docs.microsoft.com/en-us/power-query/">Power
+Query</a></b>: Data management and transformation
+
+<li><b><a target="_blank"
+href="https://powerbi.microsoft.com/en-us/blog/getting-started-with-power-pivot-part-i/">Power
+Pivot</a></b>: Data modeling
+
+<li><b><a target="_blank"
+href="https://support.office.com/en-us/article/power-view-overview-and-learning-5380e429-3ee0-4be2-97b7-64d7930020b6">Power
+View</b></a>: Data visualization engine
+
+<li><b><a target="_blank"
+href="https://powerbi.microsoft.com/en-us/blog/5-minute-tutorial-for-creating-custom-maps-with-excel-and-power-map/">Power
+Map</b></a>: 3D geospatial visualization
+
+<li><b><a target="_blank"
+href="https://powerbi.microsoft.com/en-us/desktop/">Power BI
+Desktop</b></a>: A system that integrates Power Query, Power Pivot,
+and Power View for dashboard creation
+
+<li><b><a target="_blank"
+href="https://powerbi.microsoft.com/en-us/publishtoweb/">Power BI
+Website</b></a>: A Microsoft-hosted cloud service where BI Desktop
+dashboards can be saved and shared
+
+</ul>
+
+<p>
+Our main focus in these lectures will be on Power BI Desktop (BI
+Desktop) and Power BI Website. Additional information can be found on
+Microsoft's Power BI site if you're interested in exploring additional
+BI tools.
+</p>
+
+<h2 href="#setup" id="setup">Setup</h2>
+
+<p>
+To use BI, you can download a copy of BI Desktop, either from
+<a target="_blank" href="https://office365.ncsu.edu">the university's
+Microsoft subscription license</a> or <a target="_blank"
+href="https://powerbi.microsoft.com/en-us/desktop/">directly from
+Microsoft</a>. We recommend you use the university's download, since
+this will also give you the ability to publish desktops to BI's public
+cloud. There are a number of steps you will need to complete to get
+BI Desktop up and running.
+</p>
+
+<ol>
+
+<li>Go to the <a target="_blank"
+href="https://office365.ncsu.edu">university's Office 365 software
+link, https://office365.ncsu.edu</a>; authenticate if needed.
+
+<li>Choose the Power BI icon. If it isn't on the default list of
+choices, click the "All Apps &rarr;" link to expose it.
+
+<li>Click on Power BI. This will take to to the Power BI public cloud.
+
+<li>In the upper-right corner, click on the down arrow (&darr;) and
+choose "Power BI Desktop."
+
+<li>Click "Open Microsoft Store" to jump to BI Desktop's download link
+on the Microsoft Store.
+
+<li>Choose "Download" to download BI Desktop. If you receive a request
+dialog to login to your Microsoft account, you can either do that (if
+you have an account), or simple Cancel and close the dialog. BI
+Desktop will download regardless.
+
+</ol>
+
+<p>
+However you download BI Desktop, the first time you run it a dialog
+should appear with an option in the center to "Sign In."  Do this, and
+enter your Unity ID. Since the university has a license to Power BI,
+this should present a standard Unity login screen where you can use
+your Unity ID and password to sign in to Power BI. Once you do this,
+you will have the ability to publish to and access the Power BI cloud.
+</p>
+
+<!--
+<p>
+Another potential issue: if you have MS Office installed, ensure the
+architecture of the BI Desktop you choose matches the architecture of
+the MS Office you have installed, either 32-bit or 64-bit. To check
+the architecture of an Office install, run one of its program (e.g.,
+MS Word), then choose "File&thinsp;&rarr;&thinsp;Account" and click on
+the "About Word" button. A dialog will appear with text similar to
+"Microsoft&reg; Word for Office MSO (16.0.12026.20344) 64-bit". This
+shows a 64-bit Office installation. If you need to download a specific
+architecture of Power BI, go to the <a target="_blank"
+href="https://powerbi.microsoft.com/en-us/desktop/">direct Microsoft
+link</a>. Here, you can explicitly select 32-bit or 64-bit by choosing
+"See Download or Language Options &gt;", select the language "English"
+and click the "Download" button, then choose "PBIDesktopSetup.exe" for
+32-bit MS Office, or "PBIDesktopSetup_x64.exe" for 64-bit MS Office.
+</p>
+-->
+
+
+<h2 id="desktop">Basic Power BI Desktop</h2>
+
+<p>
+BI Desktop loads with a blank <i>report worksheet</i> opened by
+default. On the left of the worksheet are three <i>workspace</i> icons
+allowing access to reports, data, and relationships, respectively. On
+the right are vertical tabs for filters, visualizations, and data
+fields. These can be shown or hidden with the &gt; or &lt; icons.
+</p>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  BI Desktop's initial report worksheet after starting the program.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-start.png" alt="bi-start">
+  </td>
+</tr>
+</table>
+
+
+<p>
+In order to visualize, we need to start with a dataset. We'll be using
+a modified version of a <a href="USDA_activity_dataset.xls">Excel
+activity dataset</a> originally provided
+by <a href="http://www.peteraldhous.com">Peter Aldhous</a> as part of
+his <a href="http://www.peteraldhous.com/CAR/tableau_demo.pdf">Tableau
+demo</a>. Once you've downloaded the activity dataset to your
+computer, open it in Excel and spend a few minutes familiarizing
+yourself with its different fields.
+</p>
+
+<h4>Loading Data</h4>
+
+<p>
+To start, we need to load the activity dataset into BI Desktop.
+</p>
+
+<ol>
+
+<li>Launch BI Desktop.
+
+<li>Choose "Get data" from the initial introduction dialog.
+
+<li>Select "Excel" from the list of available data sources, and click
+the "Connect" button.
+
+<li>Open "USDA_activity_dataset.xlsx" from the File Dialog.
+
+<li>Choose the "USDA Activity Dataset" sheet, and click the "Load"
+button.
+
+</ol>
+
+<p>
+Once the Excel worksheet has loaded, you should see a blank BI Desktop
+worksheet report, with the fields from the USDA Activity Dataset in
+the "Fields" column on the far right side of the window.
+
+
+<table class="center">
+<caption style="text-align: center;">
+  BI Desktop's initial worksheet after loading the activity dataset.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-start.png" alt="bi-start">
+  </td>
+</tr>
+</table>
+
+
+
+<h4>Fields</h4>
+
+<p>
+Unlike Tableau or SAS VA, BI Desktop does not try to subdivide data
+attributes into categorical (qualitative) or continuous (qualitative)
+values. Instead, the "Fields" column lists each data attribute with a
+checkbox, an optional symbol (e.g., &Sigma;), and its name from the
+spreadsheet header row. The checkbox identifies whether the given
+attribute is in-use for some part of the currently selected
+visualization.  The symbol defines data type: &Sigma; for numeric
+attributes, &#x1f310; for a geographic attribute, a calculator-like
+symbol for a calculated field, and blank for text for other data that
+BI Desktop has not automatically classified.
+</p>
+
+<p>
+Similar to Tableau and SAS VA, however, visualizations are created by
+selecting a visualization type and using drag-and-drop to define the
+visualization's properties. For example, to create a "% Smokers" by
+"State" bar graph, perform the following steps.
+
+<ol>
+
+<li> Click on "Stacked column chart" in the "Visualizations" column
+(top row, second icon); a placeholder bar chart will appear in the
+report worksheet.
+
+<li>Drag "State" to the "Axis" field, to use state name on the X-axis.
+
+<li>Drag "% Smokers" to the "Value" field, to visualize percent
+smokers in separate vertical bars; notice that this also defines the
+Y-axis.
+
+<li>Grab the bottom-right handle and drag the visualization to fill
+the screen.
+
+<li>Notice that if you hover over a bar, "% Smokers" is reported as a
+large number; this is because the default aggregation is Sum; to
+change it, right-click on the "% smokers" in the "Value" field and
+choose "Median" to change the aggregation to median.
+
+<li>By default, the graph is sorted by "% Smokers;" if you wanted to
+sort by "State", click on the ellipsis symbol (&#x22ef;), and choose
+"Sort by&thinsp;&rarr;&thinsp;State."
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  A vertical bar graph of the median percentage of smokers by state.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-state-med-smoker.png" alt="bi-state-med-smoker">
+  </td>
+</tr>
+</table>
+
+
+<h2 id="dot-map">Dot Map</h2>
+
+<p>
+Next, we'll generate a dot map of the adult obesity rate for each
+county.
+</p>
+
+<ol>
+
+<li>Clear the worksheet selecting any visualizations you've built
+and pressing the Del key.
+
+<li>Choose the "Map" visualization (third row, sixth icon) to insert a
+dot map visualization onto the report worksheet; expand the
+visualization to fill the report canvas.
+
+<li>We will build a hierarchical State&ndash;County map, allowing a
+user to see an overview at the State level, then click on an
+individual state to "drill down" to the County level.
+
+<li>First, we must define State and County to be geographic
+attributes; to do this, select "County" in the "Fields" column, choose
+the "Modeling" tab at the top of the screen, and in the "Properties"
+region choose a "Data Category" of "County"; do the same for the
+"State" attribute, but select "State or Province" rather than
+"County."
+
+<li>Notice that a globe icon has been placed left of both "County" and
+"State" to identify them as geographic properties.
+
+<li>Drag "State" to the "Location" field, then drag "County" to the
+"Location" field below "State"; "County" <b>must</b> be below "State"
+for the drill-down hierarchy to work properly.
+
+<li>At the top of the dot-map visualization are a row of icons. Select
+the down arrow (&darr;) to turn on hierarchical navigation.
+
+<li>Now, if you click on any bubble for a given state, the
+visualization will automatically "zoom in" on that state and show
+bubbles for each county; click on the up arrow (&uarr;) to return to
+the state view.
+
+<li>To color the bubbles by "Adult obesity rate," click on the paint
+roller icon in the "Visualizations" tab to format the visualization.
+
+<li>Click on the "Data colors" label to expand it, then hover over
+"Default color"; a set of vertical ellipsis (&#x22ee;) will appear to
+the right, click on them and choose the "Conditional formatting" label
+that appears.
+
+<li>In the "Default color" dialog, choose "Adult obesity rate" in the
+"Based on field" drop-down menu, and choose "Median" in the
+"Summarization" drop-down menu.
+
+<li>Select the "Diverging" checkbox, and for the "Minimum", "Center",
+and "Maximum" color drop-downs, choose a dark blue, white, and a dark
+red, respectively, then click "OK."
+
+<li>Bubbles in the State and County maps will now be saturated blue
+for below the median, white for at the median, and saturated red for
+above the median.
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  A map showing average obesity rate by state and county using a
+  red&ndash;blue colour scale: red for values above the median, blue
+  for values below the median, and saturation for values farther from
+  the median.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-obesity-red-blue.png" alt="bi-obesity-red-blue">
+  </td>
+</tr>
+</table>
+
+
+<h2 id="scatterplot">Scatterplots</h2>
+
+<p>
+Next, we'll create some scatterplots to compare adult obesity rate
+to other, possibly related measures.
+</p>
+
+<ol>
+
+<li>Select the "Scatter chart" visualization from the "Visualizations"
+column (third row, second icon); note: make sure no other
+visualization is selected, otherwise the scatterplot will replace that
+visualization.
+
+<li>In the "Fields" section of the "Visualizations" column (leftmost
+icon under the visualization type icons), drag "Adult obesity rate" to
+the "X Axis" label and "% smokers" to the "Y Axis" label.
+
+<li>Drag "County" to the "Details" label to show a dot for each
+county.
+
+<li>Click the magnifying glass "Analysis" icon, click on "Trend Line,"
+and click on "+ Add" to add a linear trend line; choose a "Style" of
+"Dotted."
+
+<li>Right-click on the scatterplot visualization and choose
+"Copy&thinsp;&rarr;&thinsp;Copy visual"; hit Ctrl+V twice to create
+two copies of the original scatterplot; drag them to position them
+relative to one another.
+
+<li>In the second scatterplot, drag "% eating few fruits and
+vegetables" to the "Y Axis" label, replacing "% smokers", then
+right-click and choose "Median" for the aggregation method.
+
+<li>Repeat these operations with the third scatterplot and the
+"% who do not exercise" attribute.
+
+</ol>
+
+<p>
+Notice that, by default, BI Desktop links data points in the
+visualizations. For example, click on any bubble in a scatterplot, and
+the dot map will zoom in on that bubble's state and county.
+Similarly, if you click on a state bubble to drill down to a state's
+counties, only that state's county dots will appear in the
+scatterplots.
+</p>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Three scatterplots showing comparing average obesity rate by county
+  to percentage of smokers, percentage eating few fruits and
+  vegetables, and percentage who do not exercise.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-scatterplot.png" alt="bi-scatterplot">
+  </td>
+</tr>
+</table>
+
+
+<h2 id="linegraph">Dual-Axis Line Graph</h2>
+
+<p>
+To compare "Adult Obesity" and "% Smokers," we want to build a
+dual-axis line graph. Unfortunately, BI Desktop does not currently
+have the ability to support two Y-axes for two line graphs, although
+it does support a combination bar+line graph. Microsoft's current
+suggestion is to embed an R-based ggplot2 dual-axis graph. Although
+this seems somewhat high maintenance on BI Desktop's part, it does
+give us an opportunity to see how to embed R-based plots into a BI
+dashboard. It is also possible to use Python to construct plots (e.g.,
+with Pyplot) in a similar fashion.
+</p>
+
+<p>
+To start, we need to ensure that BI Desktop has access to an R
+interpreter, and optionally to an R integrated development environment
+(IDE) so that R can render the plots properly. To do this, choose
+"File", then "Options and Settings&thinsp;&rarr;&thinsp;Options."
+Select "R scripting" from the "GLOBAL" list, and enter or confirm a
+path to an R interpreter in the "Detected R home directories:"
+drop-down list, and an R IDE in the "Detected R IDEs" drop-down list.
+Because I already have R 3.3.1 and RStudio installed, BI Desktop has
+located them and automatically populated my fields.
+</p>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  BI Desktop's detected R home directory and R IDE options, located
+  in the R scripting pane of the Options dialog.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-R-settings.png" alt="bi-R-settings">
+  </td>
+</tr>
+</table>
+
+
+<p>
+Once the location of R and its corresponding IDE are set, we can
+insert an "R Visual" onto our report worksheet. To do this, click "R
+script visual" (5th row, 4th icon) to insert an R script-based
+visualization. You should see a ".R" placeholder and an "R script
+editor" at the bottom of the screen. Data you want to use in the R
+script must be added to the R visual. Since we want to compare "Adult
+obesity rate" and "% smokers" by "State", we drag all three attributes
+from the "Fields" list to the "Values" field in the "Visualizations"
+column. Notice that comment lines appear in the R editor denoting that
+a dataframe called <code>dataset</code> will automatically be created
+whenever the R visual executes or updates.
+</p>
+
+<p>
+Next, we add the following R code to produce a
+dual-axis <code>ggplot2</code> line graph of "Adult obesity rate" and
+"% smokers" by "State."
+
+<div class="code-div">
+library( "ggplot2" )<br>
+library( "reshape2" )<br>
+<br>
+df_long <- melt( dataset, id.vars = "State", measure.vars=c( "Adult obesity rate", "% smokers" ) )<br>
+p <- ggplot( df_long, aes( x=State, y=value, colour=variable ) )<br>
+p <- p + geom_point( size=2.0 )<br>
+p <- p + geom_line( aes( group=variable ), size=1.0 )<br>
+p <- p + scale_y_continuous( name="Obesity (%)", sec.axis=sec_axis( ~ ., name="Smokers (%)", labels=function(x) paste0( x,"%" ) ), labels=function(x) paste0( x,"%" ) )<br>
+p <- p + scale_colour_manual( labels=c( "obesity", "smokers" ), values=c( "orange", "blue" ) )<br>
+p <- p + theme( axis.text.x=element_text( angle=-45, hjust=0 ) )<br>
+p <- p + labs( colour="" )<br>
+p<br>
+</div>
+
+<p>
+Once you have entered this code beneath the line <code># Paste or type
+your script code here:</code>, you can run it by clicking on the run
+icon in the R editor's title bar (<i class="fa
+fa-play-circle-o"></i>). Assuming you pointed to a valid R interpreter
+and entered the code properly, you should see a dual-axis line graph
+in your R visual. You can hide the R editor by clicking on the down
+arrow in its titlebar, or by deselecting the R visual.
+</p>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Dual-axis line graphs comparing median obesity rate by state to
+  median percentage smokers.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-dual-line.png" alt="bi-dual-line">
+  </td>
+</tr>
+</table>
+
+<p>
+One problem with this solution is that, unless you're using Microsoft
+Power BI Pro, R and Python-based visuals will not render if your
+dashboard is published to the web. Rather than dealing with R, we can
+switch to a different visualization type that provides the same
+"visual search for correlation" capability. An obvious choice is a
+side-by-side bar chart. This has the added advantage that, in this
+case, both "Adult obesity rate" and "% smokers" are reported by
+percent, so we only need a single axis to properly annotate both
+variables. To create the side-by-side bar chart, we'll first create
+two new columns in our dataset that report true percentages on the
+range 0&hellip;1 rather than the 0&hellip;100 range that both "Adult
+obesity rate" and "% smokers" use. This will ensure we can format
+the fields as percentages, to properly show a percent symbol on the
+bar graph's vertical axis.
+</p>
+
+<ol>
+
+<li>In the "Home" tab, choose "New Measure" from the "Calculations"
+region of the ribbon.
+
+<li>In the dialog that appears, replace <code>Measure =</code>
+with <code>Obesity_Frac = [Adult obesity rate] / 100.0</code>
+
+<li>Hit Return to enter the new measure, then click the "X" to close
+the dialog.
+
+<li>Select the new "Obesity_Frac", click the "Modeling" tab at the top
+of the window, and in the "Formatting" region click the "%" button and
+choose 1 decimal point to format the field as a percentage with a
+single digit of precision.
+
+<li>Repeat the same steps, but name the new column "Smoker_Frac" and
+use "[% smokers]" in place of "[Adult obesity rate]". Remember to
+format it as a single-decimal percentage.
+
+</ol>
+
+<p>
+Now that we have our new measures created, we can construct the
+side-by-side bar chart.
+</p>
+
+<ol>
+
+<li>Click "Clustered column chart" (first row, fourth icon) in the
+"Visualizations" column.
+
+<li>Drag "State" to the "Axis" field.
+
+<li>Drag "Obesity_Frac" and "Smoker_Frac" to the "Value" field.
+
+<li>Click the down-arrow in "Obesity_Frac" and choose an aggregation
+type of "Median"; do the same for "Smoker_Frac".
+
+</ol>
+
+<p>
+The result is a side-by-side bar chart, organized by state, showing
+each state's obesity rate and smoker rate as percentages. You can
+click the &hellip; in the top-right of the visualization to choose to
+sort either ascending or descending by state, obesity, or smoker
+percentage. As noted above, this has the additional advantage of being
+fully functional when it's published to the web.
+</p>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Side-by-side bar graphs comparing median obesity rate to
+  median percentage smokers by state.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-side-chart.png" alt="bi-side-chart">
+  </td>
+</tr>
+</table>
+
+
+<h2 id="dashboard">Dashboard</h2>
+
+<p>
+In some sense, visualizations <i>are</i> dashboards, or "reports" in
+BI Desktop terminology, since they provide built-in interactivity by
+default. For example, we have already seen that selecting an item in
+any visualization automatically "links" to all other visualizations,
+filtering their contents to match the selected item or items.
+</p>
+
+<p>
+BI Desktop does provide some additional elements to add items to a
+report. In the "Home" tab's "Insert" region there are options for
+"Text box", "Image", or "Shape" that can be placed on the dashboard.
+Under "Custom visuals", you can import specialized visualizations or
+data manipulation widgets (e.g., sliders, word clouds, etc.)  from
+Microsoft's visual repository. Some of these are built by Microsoft,
+and others are contributed by independent programmers. Power BI
+provides an API to allow construction of custom visuals.
+</p>
+
+<p>
+Finally, <a target="_blank"
+href="https://docs.microsoft.com/en-us/power-bi/visuals/power-bi-visualization-slicers">slicers</a>, which act like filters, can be inserted directly
+into a report, to make them more prominent and accessible versus using
+the Filter column. As an example, we will create a drop-down menu
+slicer to allow users to filter our visualizations to one or more
+individual states.
+</p>
+
+<p>
+To insert a state slicer into our report, complete the following
+steps.
+
+<ol>
+
+<li>Choose "Slicer" from the "Visualizations" column (fifth row, first
+icon).
+
+<li>Drag "State" to the "Field" field; the slicer will fill with
+checkboxes and associated state names.
+
+<li>Hover over the slicer, and click the down arrow that appears in the
+upper-right corner; change the selection from "List" to "Dropdown".
+
+<li>We now have a dropdown menu that allows users to filter the
+visualizations to a single state, or multiple states by Ctrl+Click'ing
+multiple state checkboxes; it can be sized and placed on the report
+like any other visualization.
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Side-by-side bar graphs comparing median obesity rate to
+  median percentage smokers by state.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 100%; max-width: 1920px;"
+      src="figs/bi-slicer.png" alt="bi-slicer">
+  </td>
+</tr>
+</table>
+
+
+<p>
+Notice in this image I've also cleaned up the visualization. I've
+added a title as a text box, and tweaked the text for axes and titles
+in the visualizations to convert them from potentially uninformative
+variable names to more descriptive, English-language explanations.
+Any one of these changes by itself is not significantly impactful, but
+the whole is definitely more than the sum of the parts, since the
+dashboard now appears professional and ready for use by domain experts
+who are not necessarily visualization or Power BI savvy.
+</p>
+
+
+<h2 id="publish">Publishing</h2>
+
+<p>
+The final step is to upload your work to the web. Similar to Tableau
+Public, this provides a method to easily share your dashboard through
+a web browser.
+</p>
+
+<p>
+To publish to the BI website, make sure you've logged in with your
+Unity ID and password as describe in the <a href="setup">Setup
+section</a>. Next, Click on "Publish," which is in the "Share" region
+of the "Home" tab. BI Desktop will ask you if you want to save any
+changes you've made to the Dashboard, then ask you to "Select a
+destination." Choose "My workspace" and click "Select." Your
+report will be uploaded to the BI website, and you will be given
+options to "Open 'xxx.pbix' in Power BI" or "Get Quick Insights."
+If you click the "Open..." link, a web browser sheet will open containing
+your BI report.
+</p>
+
+<p>
+Unfortunately, the ability to "Share" your dashboard is again
+restricted to Power BI Pro users. Providing the URL to the dashboard
+won't work, since you need to be logged into Power BI with your
+account credentials in order to access the dashboard. However, this
+does give you the ability to demonstrate dashboards from the web,
+which is useful in situations like external presentations, where the
+BI Desktop is unlikely to be installed on the machine you are using.
+</p>
+
+<p>
+This tutorial only begins to explain the power and flexibility of
+Power BI. You can use Power BI's online documentation to explore BI in
+more detail. You can also come to talk to me if you're having
+problems, and I can try to help you find instructions to construct the
+visualizations you want to build.
+</p>
+
+<p>
+Also, remember that, just like Tableau, BI Desktop is a tool to allow
+you to build visualizations. Like any tool, BI doesn't necessarily
+guarantee that the visualizations you produce are <em>good</em>
+visualizations. Try to apply the design principles we discussed in the
+visualization lecture, to make sure your visualizations are clear,
+effective, and well structured. The default visualizations that BI
+provides are unlikely to offer this, since BI doesn't have your domain
+expertise and understanding of the data's context to decide how best
+to present it.
+</p>
+
+<!-- The mod-date span will be updated by code in mod-date.js -->
+
+<hr class="fig_top">
+<div class="footer">
+  Updated <span id="mod-date">01-Jan-01</span>
+</div>
+
+</body>
+</html>
+
+<!--  LocalWords:  ui Analytics Healey CSS SVG scalable glyphs API px
+ -->
+<!--  LocalWords:  geolocated DOCTYPE html javascript src init colour
+ -->
+<!--  LocalWords:  mapOptions getElementById analytics draggable grey
+ -->
+<!--  LocalWords:  fillColor fillOpacity strokeColor strokeWeight SQL
+ -->
+<!--  LocalWords:  APIs google setQuery lon rng siz tbl getDataTable
+ -->
+<!--  LocalWords:  getNumberOfRows getColumnRange getValue datasets
+ -->
+<!--  LocalWords:  toLocaleString dataset Aldhous startup xls uncheck
+ -->
+<!--  LocalWords:  coloured labelled checkbox Scatterplots unselect
+ -->
+<!--  LocalWords:  scatterplots scatterplot Ctrl workspace data's MSO
+ -->
+<!--  LocalWords:  colours submenu popup geospatial BI's exe xlsx SAS
+ -->
+<!--  LocalWords:  PBIDesktopSetup Summarization ggplot Pyplot IDEs
+ -->
+<!--  LocalWords:  RStudio th dataframe df titlebar Frac checkboxes
+ -->
+<!--  LocalWords:  Dropdown dropdown Click'ing impactful pbix
+ -->

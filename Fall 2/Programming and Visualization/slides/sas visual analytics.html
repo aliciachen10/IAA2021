@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta charset="UTF-8" />
+
+<!-- JQuery package -->
+
+<link type="text/css" href="../../css/redmond/jquery-ui-1.10.2.css" rel="stylesheet" />
+<script type="text/javascript" src="../../js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../../js/jquery-ui-1.10.2.min.js"></script>
+
+<!-- Style header for jQuery accordions -->
+
+<style>
+.ui-accordion-header {
+  font-family: 'Droid Sans', sans-serif;
+  font-style: normal;
+}
+</style>
+
+<!-- Google Code hyphenator -->
+
+<script type="text/javascript" src="../../js/hyphenate.js"></script>
+
+<!-- Google fonts stuff -->
+
+<link rel="stylesheet" type="text/css"
+  href="https://fonts.googleapis.com/css?family=Noto+Serif:400" />
+<link rel="stylesheet" type="text/css"
+  href="https://fonts.googleapis.com/css?family=Noto+Serif:400italic" />
+<link rel="stylesheet" type="text/css"
+  href="https://fonts.googleapis.com/css?family=Droid+Sans:400" />
+<link rel="stylesheet" type="text/css"
+  href="https://fonts.googleapis.com/css?family=Droid+Sans:700" />
+
+<!-- Course page CSS and JS -->
+
+<link type="text/css" href="../../css/course.css" rel="stylesheet" />
+<script type="text/javascript" src="../../js/mod-date.js"></script>
+<script type="text/javascript" src="./js/msa-va.js"></script>
+
+<!-- Overrides for standard course CSS -->
+
+<link type="text/css" href="msa-va.css" rel="stylesheet" />
+
+<style>
+ol li {
+  padding-left: 0.5em;
+}
+</style>
+
+
+<title>SAS Visual Analytics: Institute for Advanced Analytics</title>
+</head>
+
+<body style="background-color: white" class="hyphenate">
+
+<div style="
+  position: relative;
+  height: 400px;
+  background-image: url( 'figs/va-logo.png' );
+  background-repeat: no-repeat;
+  background-position: center top;
+">
+
+<!-- NC State logo, upper-left corner -->
+
+  <div style="
+    position: absolute;
+    align: right;
+    top: 10px;
+    left: 10px;
+  ">
+    <a target="_blank" href="https://www.ncsu.edu">
+      <img src="figs/nc-state-logo-blue.png"
+       style="
+         border-style: none;
+         -moz-box-shadow: 1px 1px 8px #646464;
+         -webkit-box-shadow: 1px 1px 8px #646464;
+         box-shadow: 1px 1px 8px #646464;
+       " alt="nc-state logo">
+    </a>
+  </div>
+
+<!-- Viya VA text, lower-left corner -->
+
+  <div style="
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    font-size: 16pt;
+    font-weight: normal;
+    color: #646464;
+  ">
+    <div style="line-height: 90%;">Viya VA</div>
+    <div style="font-size: 10pt;">
+      <a target="_blank" href="http://www.csc.ncsu.edu/faculty/healey">
+      <i>Christopher G. Healey</i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Spacer after image of one "line" -->
+
+<div style="height: 1em;"></div>
+
+<!-- Navigation toolbar -->
+
+<div id="navWrap">
+  <div id="nav">
+    <ul id="nav-list">
+      <li id="va-intro">Introduction
+      <li id="va-setup">Setup
+      <li id="va-basic">Basic Viya VA
+      <li id="va-dot-map">Dot Map
+      <li id="va-scatterplot">Scatterplots
+      <li id="va-line-graph">Line Graph
+      <li id="va-widget">Widgets
+      <li id="va-analytic">Analytics
+    </ul>
+  </div>
+
+  <div id="nav-footer">
+  </div>
+</div>
+
+
+<h2 id="intro">Introduction</h2>
+
+<p>
+This module will introduce you
+to <a href="http://documentation.sas.com/?cdcId=vacdc&cdcVersion=8.1&docsetId=vareports&docsetTarget=p1meq1jkn3ge3xn10om2gxwooyvw.htm&locale=en">SAS
+Visual Analytics (VA)</a>, a SAS module designed to analyze and
+visualize large datasets. We will work through a simple example of
+loading data, and visualizing it in different ways as a dashboard.
+</p>
+
+<h2 id="setup">Setup</h2>
+
+<p>
+In order to work with Viya VA, you will need access to an online Viya
+account, since VA runs as a web application. To do this, you must
+first login to the VPN using Cisco AnyConnect Secure Mobile
+Client. Once you have connected to the VPN, open a web browser and
+navigate to <a href="https://sasviya.iaa.ncsu.edu">
+https://sasviya.iaa.ncsu.edu</a>. You will be started in the last
+module you were running when you most recently logged out of Viya.  To
+start SAS Visual Analytics (VA), click the three bars (the hamburger)
+left of the SAS Drive text at the top of the screen, and
+choose <em>Explore and Visualize Data</em> from the pop-down menu.</p>
+
+<!--
+<table class="center">
+<caption style="text-align: center;">
+  SAS Viya 3.4's default starting page
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/viya-start.png" alt="viya-start">
+  </td>
+</tr>
+</table>
+-->
+
+<h2 id="basic">Basic Viya VA</h2>
+
+<p>
+In order to visualize, we need to start with a dataset. We'll be using
+a modified version of a <a href="USDA_activity_dataset.csv">CSV
+activity dataset</a> originally provided
+by <a href="http://www.peteraldhous.com">Peter Aldhous</a> as part of
+his <a href="http://www.peteraldhous.com/CAR/tableau_demo.pdf">Tableau
+demo</a>. Much of the material we use here is taken from this demo,
+then updated for Viya VA and extended to apply some of the
+visualization principles we learned during the summer visualization
+lectures.
+</p>
+
+<p>
+Once you've downloaded the activity dataset to your computer, open it
+in Excel and spend a few minutes familiarizing yourself with its
+different fields.
+</p>
+
+
+<h4>Loading Data</h4>
+
+<p>
+To start, we need to load the activity dataset into Viya VA.
+</p>
+
+<ol>
+
+<li>Launch Viya VA.
+
+<li>Click the "Start with Data" button near the top of the screen.
+
+<li>Click the "Import" option at the top of the list of available
+datasets. Click ">> Local Files" from the "Add data sources..."
+options, then choose "Microsoft Excel" from the drop-down menu. Locate
+the <code>USDA_acctivity_dataset.xlsx</code> that you downloaded,
+select it, and click "Open."
+
+<li>The "Add to Import" dialog will appear. Keep the default settings
+and click the "Add" button.
+
+<li>Information about the dataset will be displayed, with a variety of
+options to control the import process. Keep the default selections and
+click the "Import item" button in the upper-right corner of the
+screen.
+
+<li>A small green line near the top of the screen will inform you "The
+table was successfully imported." Click the "OK" button to complete
+the import operation.
+
+</ol>
+
+<p>Now, you will be taken back to the VA screen, with the data from
+the imported dataset displayed in the Data panel on the left-hand side
+of the screen</p>
+
+
+<h4>Categories and Measures</h4>
+
+<p>
+Once you load the USDA Activity Dataset into Viya VA, it should
+present a window that looks similar to this.
+</p>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Viya VA's initial page after importing the USDA dataset.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-start.png" alt="va-start">
+  </td>
+</tr>
+</table>
+
+
+<p>Based on the above example, the following regions of the VA
+workspace correspond to different presentation management.
+
+<ol>
+
+<li><b>Application bar.</b> Used to access other SAS Viya
+applications.
+
+<li><b>Tab bar.</b> Used to create new tabs and manipulate existing
+tabs via the trip-dot menu on the right of each tab.
+
+<li><b>Left pane.</b> Used to work with data, report objects, and the
+report outline.
+
+<li><b>Canvas.</b> Used to visualize data as a dashboard.
+
+<li><b>Right pane.</b> Used to control details about the report and
+individual report objects.
+
+</ol>
+
+
+<p>
+Notice that Viya VA has divided the data in the Excel file
+into <b>Category</b>, <b>Measure</b>, and <b>Aggregated
+Measure</b>. Categories and Measures correspond to Dimensions and
+Measures in Tableau: categorical or qualitative data fields are
+considered categories, and numeric or quantitative information are
+considered measures. Aggregated Measures allow you to apply an
+aggregation (e.g., average, median, etc.) to a measure and save it as
+a new data field. This can also be done to the measure directly, but a
+direct aggregation then applies to all visualizations that use the
+measure. There is no way to independently vary the aggregation for a
+measure used in a visualization, similar to the way aggregations can
+be chosen for data on the rows in Tableau.</p>
+
+<p>As with Tableau, you can convert from one data role to another:
+hover of the field name, click the double down-arrows that appear to
+the right of the name, then choose an available option from the
+Classification drop-down menu. As an example, we will
+convert <b>State</b> and <b>County</b> from generic Category to
+specific Geographic roles. Hover over the <b>State</b> name, click the
+down-arrows, and in the "Classification" drop-down menu, choose
+"Geography".  In the "Edit Geography Item" dialog, select "US State
+Names" in the "Name or code context" drop-down menu. Click OK,
+and <b>State</b> is now defined as a geographic field representing US
+state names. <b>State</b> will now appear in a new "Geography" section
+in the list of data items.  Follow a similar set of steps
+for <b>County</b>, but choose "County or Region Names" rather than "US
+State Names" for "Name or code context" menu.
+</p>
+
+<table class="center">
+<caption style="text-align: center;">
+  A map showing average % smokers by state
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-smoker-by-state.png" alt="va-smoker-by-state">
+  </td>
+</tr>
+</table>
+
+
+<p>
+The most common reason to distinguish between dimensions and measures
+is because of how they act in a visualization. In general, selecting a
+category creates an axis of individual categories headings. Selecting
+a measure creates an axis showing a continuous scale over the
+measure's range of values. You can try this:</p>
+
+<ol>
+
+<li>Click on the "Objects" icon in the
+menu on the left pane, and drag the "Bar Chart" item into the data
+canvas to create a placeholder bar chart.
+
+<li>Click on the "Roles" icon in the menu
+on the right pane, and choose "State" for Category and "% smokers" for
+measure.
+
+<li>Right-click on the "State" label for
+the vertical axis and choose "Sort &rarr; State: Ascending" to sort by
+state name rather than median % smokers.
+
+<li>Click on the "Options" icon in the
+menu on the right pane, and in the "Bar" drop-down section, choose the
+"Direction: Up" button (the button on the right).
+
+<li>Further down in the "Bar" section,
+click the "Data labels" checkbox.
+
+<li>In the "X Axis Options" section,
+click the "Rotate value label" checkbox.
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  A vertical bar graph showing average % smokers by state
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-state-avg-smoker.png" alt="va-state-avg-smoker">
+  </td>
+</tr>
+</table>
+
+
+<p>Now, you should see a horizontal bar chart showing the median of "%
+  Smokers" for each of the individual states. To switch to average
+  percentage of smokers, click the "Data" icon, hover over the "%
+  smokers" measure, click the down arrows, and under the
+  "Aggregation:" label click the drop down menu and choose "Average."
+  The graph will update to show average % smokers per state.</p>
+
+
+<h4>Field Type</h4>
+
+<p>
+Each field also has a small icon to its left. This identifies its
+current <em>data type</em>: an "M"-like icon for category, a globe for
+geography, and a ruler rotated 45&deg; for measure and aggregated
+measure. Calculated fields add a small calculator icon superimposed on
+top of the data type.
+</p>
+
+
+<h2 id="dot-map">Dot Map</h2>
+
+<p>
+To start our example visualization, we will generate a dot map of the
+adult obesity rate for each state.
+</p>
+
+<ol>
+
+<li>If the canvas has visualization(s) in
+it, clear them by clicking on the visualization, then pressing "Del"
+to clear the canvas.
+
+<li>Ensure "State" is a geography data
+type by clicking the Data icon in the left pane, hovering over the
+"State" Category and clicking the down arrows, changing the
+Classification to "Geography," then choosing "US State Names" in the
+"Name or code context:" field.
+
+<li>Click the "Objects" icon in the left pane, and drag "Geo
+Coordinate" onto the canvas.
+
+<li>Click on the "Roles" icon in the
+right pane and map the following data fields: Category &rarr; State
+&ndash; 51; Size &rarr; Adult obesity rate (do this by clicking on the
+Size label and choosing Adult obesity rate to replace anything it is
+currently assigned to.)
+
+<li>You should see a map with one blue dot in the center of each state
+throughout the United States.
+
+<li>By default, VA generate a Bubble map. If this did not happen,
+click on the "Options" icon in the right pane, open the "Coordinate"
+section, and choose the "Bubbles" button in the "Data layer render
+type:" option.
+
+<li>By default, VA aggregates multiple data points for a given region
+(in our case, for a given state) by summing. We want to average the
+adult obesity rate, so click on the "Data" icon in the left pane,
+hover over Adult obesity rate, click the down arrows, and under the
+"Aggregation:" drop down menu, choose "Average."
+
+<li>We also want to colour the bubbles in a double-ended fashion based
+on Adult obesity rate. Click on the "Rules" icon in the right pane,
+then click "New rule." Choose "Adult obesity rate" from the list that
+appears, choose the operator "&lt;" from the drop-down menu, enter a
+value of 28.5 (the median Adult obesity rate). Then, click on the
+"Style:" button and choose a shade of blue.
+
+<li>Create a second rule and perform the identical steps, except using
+an operator of "&gt;=" and a style value that's a shade of red.
+
+<li>The final map shows blue and red circles sized based on the
+average adult obesity rate, and colored based on whether the state's
+average obesity is below (blue) or above (red) the overall median.
+
+<li>To rename the report page, double-click on the "Page 1" tab title,
+and change it to "Map."
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  A map showing average obesity rate by county using a red&ndash;blue
+  colour scale: red for values above the median, blue for values below
+  the median, and saturation for values farther from the median.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-obesity-map.png" alt="va-obesity-map">
+  </td>
+</tr>
+</table>
+
+
+<h2 id="scatterplot">Scatterplots</h2>
+
+<p>
+Next, we'll create some scatterplots to compare adult obesity rate
+to other, possibly related measures.
+</p>
+
+<ol>
+
+<li>Click the "+" in the Tab bar to create a new report page.
+
+<li>Double-click the tab's default title and change it to
+"Scatterplot."
+
+<li>Click on the "Objects" icon in the
+left pane, select "Scatter Plot" and drag it to the canvas, re-open
+the "Objects" list, select "Scatter Plot" again and drag it to the
+canvas, positioning it to the right of the first scatterplot. Do this
+one more time to add a third scatterplot.
+
+<li>Click on the leftmost scatterplot,
+click on the "Roles" icon in the right pane, and add "% smokers" and
+"Adult obesity rate" to the "Measures" list.
+
+<li>Click on the middle scatterplot,
+click on the "Roles" icon in the right pane, and add "% eating few
+fruits and vegetables" and "Adult obesity rate" to the "Measures"
+list.
+
+<li>Click on the middle scatterplot,
+click on the "Roles" icon in the right pane, choose % eating few
+fruits and vegetables and Adult obesity rate from the Data Items list,
+and click OK.
+
+<li>Click on the rightmost scatterplot,
+click on the "Roles" icon in the right pane, choose % who do not
+exercise and Adult obesity rate from the Data Items list, and click
+OK.
+
+<li>Using the Data panel, change the
+aggregation method from Sum to Average for % smokers, % eating few
+fruits and vegetables, and % who do not exercise.
+
+<li>For each scatterplot, select it, click the "Options" icon in the
+right pane, in the "Style" section click the upper-left colour square
+in the "Line/Marker:" section and choose a colour for the marks (green
+for the left scatterplot, purple for the middle scatterplot, and red
+for the right scatterplot). In the "Scatter Markers" section choose a
+"Transparency:" of 40%, in the "Fit Line" section choose a "Type:" of
+"Cubic", in the "X Axis Options" select "Fixed maximum:" and set the
+value to 100, and in the "Y Axis Options" select "Fixed maximum:" and
+set the value to 45.
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Three scatterplots showing comparing average obesity rate by county
+  to percentage of smokers, percentage eating few fruits and
+  vegetables, and percentage who do not exercise.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-scatterplot.png" alt="va-scatterplot">
+  </td>
+</tr>
+</table>
+
+<p>
+There appears to be a strong correlation between adult obesity and
+all three potential predictor variables, although "% who do not
+exercise" seems to have the strongest impact on obesity rate
+(<i>i.e.</i>, the steepest slope.)
+</p>
+
+
+<h2 id="linegraph">Dual-Axis Line Graph</h2>
+
+<p>
+Often we want to compare variables across a sequence over time or a
+categorical dimension like county or state. Here, we'll build a line
+graph to represent Adult Obesity and % Smokers, to see if there's any
+additional visual correlation between the two.
+</p>
+
+<ol>
+
+<li>Click the "+" in the Tab bar to create a new report page.
+
+<li>Double-click the tab's default title and change it to "Dual-Axis
+Graph."
+
+<li>Click on the "Objects" icon in the
+left pane, select "Dual Axis Line Chart" and drag it to the canvas.
+
+<li>Click on the "Roles" icon in the
+right pane and map the following data fields: Category &rarr; State -
+51; Measure (line) &rarr; Adult obesity rate; Measure (line 2) &rarr;
+% smokers.
+
+<li>Right-click the "State" label for the
+horizontal axis and choose "Sort &gt; State: Ascending."
+
+<li>Click on the "Options" icon in the
+right pane and change the following options:
+
+<ol style="list-style-type: lower-alpha; margin-left: 0; padding-left: 2em;">
+<li>For the first "Line/Marker:" button, change the colour to orange.
+<li>For the second "Line/Marker:" button, change the colour to blue.
+<li>In the "X Axis Options", select "Rotate value label."
+<li>In both the "Y Axis Options" and "Y2
+Axis Options", select "Fixed minimum:" and "Fixed maximum:" and set
+values for both axes to 0 and 40, respectively; this ensures the lines
+span a common range of percentages.
+</ol>
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Dual-axis line graphs comparing sum of obesity rate by state to
+  sum of percentage of smoker.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-dual-line-01.png" alt="va-dual-line-01">
+  </td>
+</tr>
+</table>
+
+
+<p>
+At this point, we have a basic dual-axis graph, but there are a few of
+formatting modifications we can make to improve on VA's defaults.
+</p>
+
+<ol>
+
+<li>Since we're aggregating across all counties in a state, we want
+the average obesity and smoker rates, not the sum of all counties, so
+ensure both Adult obesity rate and % smokers are aggregating as
+Average.
+
+<li>We'd like the left and right axes to show values with a "%" sign
+at the end. To do this, click the "Data" icon, hover over the Adult
+obesity rate measure, click the down arrows, click the pencil icon
+under "Format:" and change choose "Percent."
+
+<li>Do the same operation for the "% smokers" measure.
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Dual-axis line graphs comparing sum of obesity rate by state to sum
+  of percentage of smoker, but with incorrect percentages on the
+  vertical axes.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-dual-line-02.png" alt="va-dual-line-02">
+  </td>
+</tr>
+</table>
+
+<p>
+Although this adds a "%" to the values on the vertical axis, it also
+exposes a problem: percentages run from 0% to 4,000%, because the
+"Adult obesity rate" and "% Smokers" columns are coded on a range
+0&ndash;100, and not 0.0&ndash;1.0. You can confirm this by selecting
+"Manage Data" from the menu to the left of "SAS Visual Analytics" in
+the titlebar, choosing "USDA_ACTIVITY_DATASET" from the list of
+available datasets, then selecting the "Sample Data" tab. % smokers is
+the seventh column, and shows values like 20.87, 21.74, and
+32.72. Switch back to "Explore and Visualize Data" once you're done.
+</p>
+
+<p>
+To address this, we will create a new <em>calculated field</em> that
+spans the 0.0&ndash;1.0 range we want.
+<p>
+
+<ol>
+
+<li>Choose the "Data" icon.
+
+<li>Select "Calculated item" from the "New data item" menu.
+
+<li>Choose a "Name:" of "% Adult Obesity 0.0-1.0"
+
+<li>Click the "Operators" tab, reveal the "Numeric (simple)" options,
+and drag "# x / y" to the "number" box in the canvas.
+
+<li>Right-click the first "Number" button, choose "Replace with" and
+select Adult obesity rate from the pop-up menu.
+
+<li>Click inside the second "number" field and enter 100.0.
+
+<li>Click "OK" to save the calculated item.
+
+</ol>
+
+<p>Notice now that there is a "% Adult Obesity 0.0-1.0" measure in the
+Data list, and the measure's data type ruler is covered by a
+calculator, indicating it is a calculated field. Execute the same set
+of operations to create a calculated field on the range 0&ndash;1 for
+"% smokers."</p>
+
+<p>To fix the dual line graph, click the "Roles" icon, and replace the
+existing measures with "% Adult Obesity 0.0-1.0" and "% smokers
+0.0-1.0" for "Measure (line)" and "Measure (line 2)", respectively.
+Unfortunately, VA resets back to its default values, so you must
+also re-do the following changes.
+</p>
+
+<ol>
+
+<li>Right-click on "State" and choose "Sort &gt; State: Ascending"
+
+<li>Open the "Data" panel, right-click on "% Adult Obesity 0.0-1.0"
+and choose "Format: &rarr; Percent" and "Aggregation: &rarr; Average";
+apply the same formatting to "% smokers 0.0-1.0"
+
+<li>Open the "Options" panel, and change the "Fixed maximum:" for both
+the "Y Axis Options" and "Y2 Axis Options" to 40%, since VA has
+changed them to 4000%.
+
+</ol>
+
+<p>
+Once this is done, we have the same dual line graph, but with
+percentages correctly shown on the right vertical axis.
+</p>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Dual-axis line graphs comparing sum of obesity rate by state to sum
+  of percentage of smoker with correct percentages on the vertical
+  axis.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-dual-line-03.png" alt="va-dual-line-03">
+  </td>
+</tr>
+</table>
+
+
+<h2 id="widget">Widgets</h2>
+
+<p>VA provides a number of interactive widgets to allow you to control
+what is displayed within your visualizations. These act in a manner
+similar to Action Filters in Tableau: selections within the widgets
+automatically apply filters to one or more visualizations. Unlike
+Tableau, however, the widgets can simply be dropped and configured on
+a report, as opposed to building a separate "visualization" and
+linking it as an action filter in a Tableau dashboard. The interactive
+widgets included in VA include:</p>
+
+<ul>
+
+<li><b>Button Bar.</b> A list of buttons,
+whose number and labels are defined by a category field.
+
+<li><b>Drop-Down List.</b> A drop-down
+menu, whose length and entries are defined by a category field.
+
+<li><b>List.</b> A checkbox list whose
+length and entries are defined by a category field.
+
+<li><b>Slider.</b> A double-ended slider
+whose minimum and maximum values are defined by a measure field.
+
+<li><b>Text Input.</b> A text field where
+you can enter the name of a category field to filter the visualization
+to show only entries tied to the named field.
+
+</ul>
+
+<p>Viya VA also provides a number of containers, to control how your
+content is positioned and organized. These include:
+
+<ul>
+
+<li><b>Precision Container.</b> Allows you to place, align, and size
+objects explicitly within a container. Objects can overlap.
+
+<li><b>Prompt Container.</b>Used to group prompt controls within a
+report. Only prompt controls can be placed inside a prompt container.
+
+<li><b>Scrolling Container.</b>Displays content in a scrolling
+layout. Each object fills the entire container, you must scroll to
+see other objects.
+
+<li><b>Stacking Container.</b>Display objects as thought they are
+a slide deck. Only one object is displayed at a time. A control bar
+allows you to move between objects (slides).
+
+<li><b>Standard Container.</b>Positions content horizontally or
+vertically. When possible, content is resized so multiple objects
+can be displayed without scrolling.
+
+</ul>
+
+<p>The concept of a "dashboard" in Viya VA is different than
+Tableau. Rather than having separate worksheets and dashboards, Viya
+VA assumes you will place a container on the canvas, build multiple
+visualizations directly within the container, then select and position
+them as you like based on the container's capabilities. As an example,
+let's use a standard container to create a dashboard that has the map
+we previously built on the top, and the three scatterplots and
+dual-axis line graph below that.</p>
+
+<p>Unfortunately, SAS claims that as of the current version of VA, there
+is now way to copy content from one report page to another. You can,
+however, move content. You can do this with the following steps."
+
+<ol>
+
+<li>Click the "+" in the Tab bar to create a new report page.
+
+<li>Double-click the tab's default title and change it to "Dashboard."
+
+<li>Click the Map tab to select the map visualization.
+
+<li>Right-click inside the map visualization, and choose "Move to &gt
+Dashboard" to move the map visualization to the Dashboard page. It
+will disappear from the map page and re-appear on the Dashboard page.
+
+<li>Perform the same operation four times to move the three
+scatterplots and the dual-axis graph to the Dashboard page.
+
+<li>Select the Dashboard tab, and you should see all five
+visualizations.  Rearrange them by dragging them and changing their
+display properties in the Options panel until you have a dashboard
+layout you are happy with.
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Map, three scatterplots, and a dual-axis graph.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-map-scatter.png" alt="va-map-scatter">
+  </td>
+</tr>
+</table>
+
+
+<p>Next, we'll create a list of State names, then filter both the
+visualizations based on the state(s) selected by the user. To do
+this</p>
+
+<ol>
+
+<li>Click on the "Objects" icon.
+
+<li>Choose "List" in the "Controls" section, and drag it to lie right
+of the map, scatterplots, and dual-axis graph.
+
+<li>Click on the "Roles" icon.
+
+<li>Choose "State" for the "Category" role.
+
+<li>Click on the "Actions" icon.
+
+<li>Here, we define actions based on selections in the list. We can
+use the selections as a filter for individual visualizations, or all
+the visualizations on the canvas. Since we want to filter all the
+visualizations, activate the checkbox for "Automatic actions on all
+objects," and confirm "One-way filters" in the drop-down menu. Also
+select "Display filter breadcrumb" so we can see the active filters on
+the visualization.
+
+<li>You can dynamically resize the width of the list by hovering over
+its left border and, clicking and holding the left button when the
+pointer changes to a left-right arrow, and dragging left or right.
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Map and three scatterplots with a list widget controlling which
+  state data to visualize.
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-checklist.png" alt="va-checklist">
+  </td>
+</tr>
+</table>
+
+<p>Now, when you select a state in the list, that map will zoom to
+that state and the scatterplots will reduce to contain only samples
+from the selected state. You can select multiple states, or
+right-click and choose "Clear selection" to reset the filters.</p>
+
+<p>Suppose we also wanted to add the ability to filter based on
+how individuals voted (D, R, or missing value). We will first convert
+the map to use choropleth filled regions. Then, we will add a button
+bar to filter by "Voting in 2008".</p>
+
+<ol>
+
+<li>Click on the geomap to select it.
+
+<li>Click on the "Rules" icon, select each of the two colour
+rules, and click the trash can to delete them.
+
+<li>Right-click on the map, and choose "Change Geo coordinate to &gt;
+Geo region."
+
+<li>Click the "Objects" icon on the left, Choose "Button bar" in
+the "Controls" section, and drag it to lie below the state list
+widget.
+
+<li>Click on the "Roles" icon.
+
+<li>Choose "Voting in 2008" for the
+Category role.
+
+<li>Click on the "Actions" icon.
+
+<li>Choose "Automatic action on all objects", a drop-down value of
+"Two-way filters", and ensure "Display filter breadcrumbs" is
+selected; two-way filters allows both the voter and state filters to
+be active at the same time.
+
+<li>Click on the "Options" icon.
+
+<li>In the Title: drop-down, choose Custom title and enter a title of
+"Select Voter Type."
+
+<li>In the Button Bar section, under "Direction" click the vertical
+direction button (the second button).
+
+</ol>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Map and three scatterplots with a list widget and a button bar
+  controlling which state data and party selected in the 2008 election
+  to visualize (Republicans from Arizona and California).
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-buttonbar.png" alt="va-buttonbar">
+  </td>
+</tr>
+</table>
+
+<p>Filters are applied in a Boolean AND fashion, so the map above
+shows individuals who live in California and Arizona, and who
+voted Democrat in the 2008 election.</p>
+
+<h2 id="analytic">Analytics</h2>
+
+<p>One of Viya VA's major advantages over other visualization tools
+like Tableau is its built-in analytics objects. Because VA is
+integrated directly into Viya, it has access to all of the statistical
+power of Viya. VA provides a number of analytic, visual statistics,
+and visual data mining and machine learning objects that can be
+applied directly to the data in your visualization report.</p>
+
+<p>As an example, suppose we wanted to use a decision tree to
+see how well % eating few fruits and vegetables, % smokers, and %
+Low-income receiving SNAP predict Adult obesity rate. To do this
+
+<ul>
+
+<li>Click the "+" icon at the top of the report to create a new report
+page.
+
+<li>Click the "Objects" icon.
+
+<li>In the "SAS Visual Statistics" section, locate "Decision Tree" and
+drag it onto the new canvas.
+
+<li>Click the "Roles" icon.
+
+<li>Under "Response", click "Add" and choose % Adult Obesity 0.0-1.0.
+
+<li>Under "Predictors", click "Add" and choose % eating few fruits and
+vegetables, % Low-Income receiving SNAP, and % smokers.
+
+</ul>
+
+
+<table class="center">
+<caption style="text-align: center;">
+  Decision tree, variable importance, assessment line graph, and
+  split frequency for a decision tree predicting Adult obesity
+  rate from % eating few fruits and vegetables, % Low-income receiving
+  SNAP, and % smokers
+</caption>
+<tr>
+  <td style="text-align: center; border: 0px; padding-bottom: 0px;">
+    <img style="border: 1px solid black; width: 75%; max-width: 1920px;"
+      src="figs/va-decision-tree.png" alt="va-decision-tree">
+  </td>
+</tr>
+</table>
+
+<p>VA computes results and displays them as four visualizations,
+clockwise from the upper-left: a tree identifying splitting parameters
+at each internal level, and rules describing a leaf as well as the
+number of samples that fall into the leaf at the bottom of the tree; a
+variable importance graph, an assessment line graph showing how predicted
+and observed average correlate, and finally a treemap that shows how
+much of the sample data flows left and right at each split in the
+tree.</p>
+
+<!-- The mod-date span will be updated by code in mod-date.js -->
+
+<hr class="fig_top">
+<div class="footer">
+  Updated <span id="mod-date">01-Jan-01</span>
+</div>
+
+</body>
+</html>
+
+<!--  LocalWords:  ui Analytics Healey CSS SVG scalable glyphs API px
+ -->
+<!--  LocalWords:  geolocated DOCTYPE html javascript src init colour
+ -->
+<!--  LocalWords:  mapOptions getElementById analytics draggable grey
+ -->
+<!--  LocalWords:  fillColor fillOpacity strokeColor strokeWeight SQL
+ -->
+<!--  LocalWords:  APIs google setQuery lon rng siz tbl getDataTable
+ -->
+<!--  LocalWords:  getNumberOfRows getColumnRange getValue datasets
+ -->
+<!--  LocalWords:  toLocaleString dataset Aldhous startup xls uncheck
+ -->
+<!--  LocalWords:  coloured labelled checkbox Scatterplots unselect
+ -->
+<!--  LocalWords:  scatterplots scatterplot Ctrl workspace data's SAS
+ -->
+<!--  LocalWords:  colours submenu popup Viya VA's resize treemap ol
+ -->
+<!--  LocalWords:  li VPN AnyConnect CSV titlebar choropleth geomap
+ -->

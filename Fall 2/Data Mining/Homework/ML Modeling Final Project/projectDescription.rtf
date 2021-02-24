@@ -1,0 +1,45 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fnil\fcharset0 Menlo-Italic;\f2\fnil\fcharset0 Menlo-Bold;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww12600\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ------------------------------------------------------------------------------\
+------------------------------------------------------------------------------\
+          Machine Learning Predictive Modeling Competition.\
+------------------------------------------------------------------------------\
+------------------------------------------------------------------------------\
+\
+-----\
+Goal: \
+-----\
+\
+There are THREE targets to predict using the given attributes v1--v127 as input variables. YOU MAY CHOOSE TO MODEL ONE OR ALL OF THESE TARGET VARIABLES. You are only required to pick one to work on, but you are welcome to attempt 2 or all 3.\
+\
+1. cont.target  -- This is a continuous target variable\
+2. binary.target1 \'97 This is a binary target\
+3. binary.target2 - Also a binary target\
+\
+\
+For the 2 binary targets, false positives are more costly than false negatives - 
+\f1\i certainty
+\f0\i0  regarding predicted events is paramount and thus the accuracy of the model might best be scored using positive predictive value or lift at depth of 10-20%. Area under the ROC curve and Averaged Squared Error are also sound and common error metrics used in this application.\
+\
+binary.target1 and binary.target2 are not mutually exclusive events. Each row could have neither event, both events, or one of the events. The two targets are related in some sense and researchers would be interested in anything that might inform them that one event might be more likely to happen than the other. So far the approach to that problem is to build two models and use the output from both models to decide which event is more likely to happen. \
+\
+-------------------\
+THREE Deliverables:\
+-------------------\
+\
+1.) Submission of predictions following the convention in the sampleSubmission file. The (up to) 4 column names on this file should be "row", \'93cont.target\'94, \'93binary.target1\'94, and/or \'93binary.target2\'94 (NOT capitalized) and contain the predictions for the rows of the test data in the order they are found in the test data. The name of this submission file should be "CohortColorTeamNumber.csv" For instance, if you are on Blue team 6, the name of the submission file should be "Blue6.csv". The color should be capitalized.
+\f2\b  Please follow these rules as I would like to loop through a folder of submissions
+\f0\b0  to calculate the final test MAE to determine a winner. I need the naming convention to make that job easier. \
+\
+2.) A brief write up that describes your modeling process. 
+\f2\b This is not your typical IAA report, it can be highly technical and to the point. The audience of this report is myself, you do not have to teach or explain the techniques as if I do not know them. 
+\f0\b0 For instance you can say things like "We did a grid search over the hyperparameters (eta, depth) to determine an optimal xgboost model." \
+Describe your final model process flow and how you arrived on that as your final model process. Include ideas that you tried even if they didn't work (but only if in hindsight you still consider them good ideas - I don't need you to list failures that turned out to be bad ideas!) \
+\
+3.) A zip file that contains your commented code or a note within your report that indicates the name of your Viya project (as an admin, I have access to all the Viya Projects in Model Studio).}

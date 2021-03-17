@@ -1,0 +1,20 @@
+library(rstan)
+library(sas7bdat)
+##Read in data set
+ameshousing<-read.sas7bdat('Q:\\My Drive\\Summer II - Statistics Bootcamp\\Bootcamp Data\\ameshousing3.sas7bdat')
+##Pull off a few x's of interest
+x=cbind(ameshousing$Gr_Liv_Area, ameshousing$Basement_Area, ameshousing$Garage_Area, ameshousing$Deck_Porch_Area, ameshousing$Age_Sold)
+##Scaling x's (center and scale them)
+x=as.data.frame(scale(x))
+colnames(x)=c('Liv.Area','Base.Area','Garage.Area','Porch.Area','Age')
+##Put all data together for stan
+regress.dat=list(n=nrow(x),x=x,y=ameshousing$Log_Price)
+##Run stan code
+regress.stan=stan(file='Q:\\My Drive\\Bayesian\\Code\\ameshousing.stan',data=regress.dat,seed=93457)
+##Extract info from stan
+output.stan=extract(regress.stan)
+##See if chains converged
+traceplot(regress.stan,inc_warmup=T)
+traceplot(regress.stan)
+##Get probability intervals (and Rhat)
+print(regress.stan,  probs=c(.025,.975))

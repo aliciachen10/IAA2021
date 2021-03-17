@@ -1,0 +1,13 @@
+data{
+  int <lower=0> n;
+  vector[n] y;
+  matrix[n,5] x;
+}
+parameters{
+  real alpha;
+  vector[5] beta;
+  real<lower=0> sigma;
+}
+model {
+y ~normal(alpha + x*beta,sigma);
+}

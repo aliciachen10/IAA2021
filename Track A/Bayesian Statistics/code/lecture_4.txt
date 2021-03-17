@@ -1,0 +1,28 @@
+###Get the titanic data set
+
+library(titanic)
+##Get rid of NA's
+new.dat=titanic_train[complete.cases(titanic_train),]
+
+###Get variables
+y=new.dat$Survived
+x1=ifelse(new.dat$Sex=="male",0,1)
+x2=new.dat$Age
+x3=new.dat$Fare
+x4=x1*x2
+
+
+
+###Put data together
+titanic.dat<-list(n=length(y),y=y,x1=x1,x2=x2,x3=x3,x4=x4)
+titanic.stan<-stan(file='Q:\\My Drive\\Bayesian\\Code\\titanic.stan',data=titanic.dat,seed=03786)
+traceplot(titanic.stan)
+print(titanic.stan)
+
+
+titanic.output=extract(titanic.stan)
+alpha=titanic.output$alpha
+beta1=titanic.output$beta1
+beta2=titanic.output$beta2
+beta3=titanic.output$beta3
+beta4=titanic.output$beta4

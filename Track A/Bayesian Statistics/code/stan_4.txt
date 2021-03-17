@@ -1,0 +1,23 @@
+data{
+  int <lower=0> n;
+  int <lower=0,upper=1> y[n];
+  vector [n] x1;
+  vector [n] x2;
+  vector [n] x3;
+  vector [n] x4;
+}
+parameters{
+  real alpha;
+  real beta1;
+  real beta2;
+  real beta3;
+  real beta4;
+}
+model {
+alpha~normal(0,100);
+beta1~normal(0,100);
+beta2~normal(0,100);
+beta3~normal(0,100);
+beta4~normal(0,100);
+y ~bernoulli_logit(alpha+beta1*x1 + beta2*x2 + beta3*x3+ beta4*x4);
+}

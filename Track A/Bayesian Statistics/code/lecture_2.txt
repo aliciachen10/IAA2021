@@ -1,0 +1,35 @@
+library(rstan)
+### this is where the data is inputed
+binom.data=list(n=100, y=40)
+### This is how you run Stan
+
+binom.stan=stan(file='Q:\\My Drive\\Bayesian\\Code\\Binomial_example.stan',data=binom.data,seed=98763,
+                chains = 4,             # number of Markov chains
+                warmup = 3000,   # number of warmup iterations per chain
+                iter = 6000,          # total number of iterations per chain
+                refresh = 0,          # no progress shown
+                thin=3,			# will 'thin' the chains.help with autocorrelated posterior samples
+                init=0.3			#specify initial values
+)
+
+
+### Pull off the posterior samples
+post.samp.binom=extract(binom.stan)
+new.p=post.samp.binom$p
+
+####Check some diagnostics
+traceplot(binom.stan,inc_warmup=T)
+print(binom.stan, pars=c("p", "lp__"), probs=c(.1,.5,.9))
+### Nice plot of output
+plot(binom.stan)
+
+
+### Poisson example
+library(datasets)
+y=warpbreaks$breaks
+poisson.data=list(n=length(y), y=y)
+### This is how you run Stan
+poisson.stan=stan(file='Q:\\My Drive\\Bayesian\\Code\\Poisson_example.stan',data=poisson.data, seed=29854)
+### Pull off the posterior samples
+post.samp.poiss=extract(poisson.stan)
+new.lambda=post.samp.poiss$lambda

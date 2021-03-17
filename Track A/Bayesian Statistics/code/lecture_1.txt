@@ -1,0 +1,30 @@
+### The beta distribution is only defined from 0 to 1, so x is creating
+### that sequence.
+x<-seq(0.001,0.999,length=1000)
+### The dbeta command tells r to generate the distribution from a beta
+### distribution.  The two numbers after it are for alpha and beta.
+y1<-dbeta(x,1,1)
+### Now plot this data to see what it looks like.
+plot(x,y1,type='l')
+### Repeat for different alpha and betas to get an understanding of the 
+### beta.
+y2<-dbeta(x,2,2)
+plot(x,y2,type='l')
+y3<-dbeta(x,10,10)
+plot(x,y3,type='l')
+###explore some other results here
+library(rstan)
+### this is where the data is inputed
+binom.data=list(n=100, y=40)
+### This is how you run Stan
+
+binom.stan=stan(file='Q:\\My Drive\\Bayesian\\Code\\Binomial_example.stan',data=binom.data,seed=18569)
+### Pull off the posterior samples
+post.samp.binom=extract(binom.stan)
+new.p=post.samp.binom$p
+####Graph the posterior
+hist(new.p,main="Posterior distribution of p",xlab='Values of p', ylab='Frequency')
+###Probability p is lower than 0.30
+sum(new.p<=0.3)/length(new.p)
+###95% Probability Interval
+quantile(new.p,p=c(0.025,0.975))

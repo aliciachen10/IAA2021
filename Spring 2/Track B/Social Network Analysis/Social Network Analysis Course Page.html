@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)http://birch.iaa.ncsu.edu/~slrace/SNA2021/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+
+body {
+  margin: 0;
+  background: white;
+  min-width: 960px;
+}
+
+rect {
+  fill: none;
+  pointer-events: all;
+}
+
+circle {
+  fill: none;
+  stroke-width: 2.5px;
+}
+div#navigation{
+  text-align: center
+}
+
+.pos_right {
+  position: absolute;
+  /*top: 140px;*/
+  color: darkGrey;
+  text-align: center;
+}
+
+.right {
+  position: absolute;
+  right: 0px;
+  color: darkGrey;
+  top: 140px;
+}
+
+.left {
+  position: absolute;
+  left: 0px;
+}
+
+ul.nav {
+  list-style-type: none;
+  margin: 10;
+  padding:0;
+  display: inline-block;
+}
+li.nav {
+  float: left;
+}
+
+
+
+ul.circle {
+    list-style-type: circle;
+}
+
+.center {
+    position: relative;
+  /*  left:0;
+    right:0;*/
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    /*background-color: #b0e0e6;*/
+}
+
+/*.center {
+    display: inline-block;
+}
+*/
+.col {
+  float:left;
+  text-align: center;
+  display: inline-block;
+
+}
+
+
+a.nav:link, a.nav:visited {
+  display:block;
+  width: 120px;
+  font-weight: bold;
+  color: darkGrey;
+  background-color: black;
+  text-align:center;
+  padding: 4px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+a:hover, a:active {
+  background-color: dimdGrey;
+}
+
+/*body {
+    text-align: center;
+}*/
+
+.button {
+  display: block;
+  width: 500px;
+  height: 300px;
+  background: black;
+  margin: auto;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  vertical-align: center;
+}
+
+
+.MainImage {
+    background-image:url(MatrixBorder.png);
+    height: 250px;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    width: 100%;
+}
+
+
+</style>
+
+  <title>Social Network Analysis </title>
+  </head>
+<body data-new-gr-c-s-check-loaded="14.1006.0" data-gr-ext-installed="">
+
+<div class="MainImage">
+      <span style="verticle-align:top;padding-bottom:300px " class="left"> <img src="./Social Network Analysis Course Page_files/iaaicon.png" width="200px"> </span> 
+<span style="verticle-align:bottom;padding:0px " class="right" text-color="white"> <font size="7">Shaina Race, PhD </font></span> 
+    </div>
+
+
+
+   
+<div id="breaker" ,="" style="background: black; height:10px">
+</div>
+
+<div id="sitemenu-container">
+<div id="sitemenu">
+    <div id="page-container">
+      <div id="page">
+        <div id="page-top" class="has-logo has-title no-tagline">
+          
+<!-- <div id="navigation">
+    <ul class="nav">
+      <li class="nav"><a href="http://www4.ncsu.edu/~slrace/index.html" title="home" class="nav"><span class="in">HOME</span></a></li>
+      <!- <li class="i2 e"><a href="talks.html" title="talks"><span class="in">TALKS</span></a></li> 
+      <li class="nav"><a href="http://www4.ncsu.edu/~slrace/research.html" title="papers" class="nav"><span class="in">RESEARCH</span></a></li>
+    
+      <li class="nav"><a href="http://www4.ncsu.edu/~slrace/courses.html" title="courses" class="nav"><span class="in">COURSES</span></a></li>
+      <li class="nav"><a href="http://www4.ncsu.edu/~slrace/other.html" title="other" class="nav"><span class="in">OTHER STUFF</span></a></li>
+    </ul>
+  </div>  -->
+
+<div style="text-align: center; width: 800px; margin: 0 auto;">
+  <p style="display: inline-block;"> </p><h3> 
+ </h3><p></p>
+<h1><align="center">MSA 2021 - Social Network Analysis </align="center"></h1>
+ 
+</div>
+
+ --&gt;
+<table border="1" style="width: 1000px; height: 800px; vertical-align: center; text-align: center;  margin-bottom: 3cm; margin-left: auto; margin-right: auto; ">
+  <tbody>
+    <tr style="height: 27.5px;">
+      <td style="background-color: black;"><span style="color: white;">Topic</span></td>
+     
+      <td style="background-color: black; width:200px; "><span style="color: white;">Slides + Notes</span></td>
+      <td style="background-color: black; width: 300px;"><span style="color: white;">Code/Data </span></td>
+    </tr>
+    <tr>
+      <td>Introduction to Network Analysis <br>
+      Terminology, Software, and Visualization</td>
+ 
+      <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Slides/SNAIntro.pdf">Slides</a><br>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Notes/vizGuide.pdf">Guide to visualization in R</a></td>
+     <td> 
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/viz_chapter.html">Slack Visualization in R (Code)</a><br>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/slack2021.zip">2021 Slack Network (.zip)</a><br>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/FIgraph.RData">Fortune Interactive Graph (.RData)</a>
+
+    </td></tr>
+  <tr>
+      <td>Exploratory Analysis <br>
+      Descriptive Statistics</td>
+      
+    
+      <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Slides/DescriptiveBasics.pdf">Slides</a><br>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Notes/wkst1.pdf">Suggested Worksheet 1</a><br>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Notes/solution1.pdf"> Solutions</a></td>
+
+      <td><!-- <a href="Code/powerLawGraph.R">Exploring Degree Distribution </a><br/> -->
+      <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/SlackNetworkData2020_anon.RData" download="">2020 Slack Network (.gml)</a><br>
+           <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/"></a></td> 
+
+    </tr>
+    <tr>
+      <td>Centrality</td>
+      
+   
+       <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Slides/Centrality.pdf">Slides</a><br>
+        
+
+      </td><td>	
+ 
+</td>  
+
+    </tr>
+ <tr>
+      <td>Clustering <br>
+      Community Detection</td>
+      
+      
+      <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Slides/clustering.pdf">Slides</a><br>
+        <!-- <a href="https://mediasite.wolfware.ncsu.edu/online/Play/2137a8e234074a03a5d05647906ba4d91d">Lecture Video</a> --></td>
+      <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/CBasketball_clustering.R">Spectral clustering demo</a><br>
+      	          <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/cbasketball2021.csv" download="">NCAA Basketball 2021 Raw Scores (.csv)</a><br>
+                 <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/basketball2021.gml" download="">NCAA Basketball 2021 (.gml)</a><br>
+                  <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/basketball2021.RData" download="">NCAA Basketball 2021 (.RData)</a><br><br>
+
+       <!--  <a href="https://mediasite.wolfware.ncsu.edu/online/Play/fb1304aabdc94df392e069cffda6aa0e1d">Demo Video</a><br/><br/> -->
+
+         <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/MinSpanningTreeClustering.R">Min. Spanning Trees demo</a><br>
+     <!--     <a href="https://mediasite.wolfware.ncsu.edu/online/Play/37e488c0ec4641b08cd5bbcd409895fb1d">Demo Video</a><br/><br/> -->
+
+   
+     <!-- <a href="https://mediasite.wolfware.ncsu.edu/online/Play/253c7741753d4dfb94fce4430b3ad63c1d">Gephi Demo Video</a><br/> -->
+
+
+                           <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/basketball2019.RData" download="">NCAA 2019 (R iGraph)</a><br>
+         <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/basketball2019.RData" download="">NCAA 2020 (R iGraph)</a><br>
+
+          
+          
+      </td> 
+
+    </tr> 
+ <tr>
+      <td>Hypothesis Testing <br>
+      </td>
+    
+      <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Slides/NetworkHypotheses.pdf">Slides</a><br>
+             <mark> <a style="color: magenta; " href="https://mediasite.wolfware.ncsu.edu/online/Play/b89b0702f2bb4b23b68698cccac8dc5c1d"> Lecture Video </a><br> <br>   </mark> 
+         <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Notes/wkst2.pdf">Suggested Worksheet 2</a><br>
+         <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Notes/wkst2Solutions.pdf">Selected Solutions</a>
+       </td>
+      <td>
+       <mark> <a style="color: magenta; " href="https://mediasite.wolfware.ncsu.edu/online/Play/b756a8625bf74aa68d6940f619edb2571d"> Demo Video </a><br> </mark>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/FI_Hypothesis_Testing.R"> Consulting Examples (R code)</a><br>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/FIigraph.RData" download="">Fortune Int Data [same as day 1] (R data)</a><br>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/SlackHypothesisTesting.R"> Slack Examples (R code)</a><br>
+        <a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/slack2021.zip" download="">Slack Data [same as day 1] (.zip)</a><br>
+      </td>  
+
+    </tr> 
+  <tr> <td colspan="5" bgcolor="light yellow"> <a style="color: red; font-size: 30px" href="https://moodle-courses2021.wolfware.ncsu.edu/mod/quiz/view.php?id=814767"> FINAL EXAM OR PROJECT DUE THURS 4/1</a> </td> </tr> 
+     <tr>
+     <!-- <td>Exponential Random Graph Models <br/>
+        (ERGMs)
+      </td>
+      
+      <td><strong><a href="http://video.iaa.ncsu.edu/msa/AA502_2017-Linear_Algebra/SNA_Class_5_Keep_-_20170327_135922_16.html">Video</a></strong></br>
+        <strong><a href="http://video.iaa.ncsu.edu/msa/AA502_2017-Linear_Algebra/SNA_Class_5_Keep_-_20170327_135922_16/media/video.mp4">(.mp4)</a></strong></td>
+      <td><a href="Slides/ERGMs.pdf">Slides</a></td>
+      <td><a href="Code/FIergmData.Rdata">Fortune Interactive Data (R data)</a><br/>
+        <a href="Code/FI_ERGM.R">FI ERGM code (R code)</a><br/>
+         <a href=""></a><br/>
+          <a href=""></a><br/>
+      </td>
+
+    </tr> -->
+    </tr><tr>
+      <td>An Optional Homework Assignment <br>
+        (Car Insurance Fraud Detection)
+      </td>
+      
+      
+      <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/Car_Insurance_Data_Dictionary.rtf">Data Dictionary <br> and <br>Scenario Description</a></td>
+      <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Code/CarInsuranceFraud.Rdata">Car Insurance Claims/Employees (R data)</a>
+        
+<!--           <a href=""></a><br/>
+          <a href=""></a><br/> -->
+      </td>
+
+    </tr>
+<tr></tr>
+     <tr bgcolor="pink">
+      <td>Text Summarization using Centrality <br>
+        (Talk to SIAM grad students)
+      </td>
+      
+     
+      <td><a href="http://birch.iaa.ncsu.edu/~slrace/SNA2021/Slides/CentralitySummarization.pdf">Slides</a></td>
+      <td><a href="http://www4.ncsu.edu/~slrace/textMiningviaSNA.R">R Code</a><br>
+        <a href="http://www4.ncsu.edu/~slrace/SAarticle.txt">Article 1</a><br>
+        <a href="http://www4.ncsu.edu/~slrace/SAarticle2.txt">Article 2</a><br>
+        
+<!--           <a href=""></a><br/>
+          <a href=""></a><br/> -->
+      </td>
+
+    </tr><!-- <tr>
+      <td>Correspondence Analysis
+     <br/>
+    
+      (Chapter ?)</td>
+      
+      <td><strong><a href="">Lunch and Learn (mp4)</a></strong></br>
+        <strong><a href="">(html version)</a></strong></td>
+      <td><a href="">Correspondence Analysis</a></td>
+      <td></td>
+      <td><a href=""></a> </td>
+</tr> -->
+
+     
+
+  </tbody>
+</table>
+
+
+
+
+
+
+
+<table border="1" style="width: 800px; height: 200px; vertical-align: center; text-align: center; margin: auto;">
+  <tbody>
+    <tr style="height: 27.5px;"> <td style="background-color: black; width: 600px;"><span style="color: white;">Cool Links</span></td> </tr>
+    <tr><td> <a href="https://panamapapers.icij.org/the_power_players/"> Interactive Network Visualization of Offshore Financial Networks revealed by Panama Papers.</a> You can find the entire database and code <a href="https://github.com/amaboura/panama-papers-dataset-2016/tree/master/csv-viz-data"> here.</a></td></tr>
+    <tr><td>    </td></tr>
+    <tr><td>    </td></tr>
+    <tr><td>    </td></tr>
+    <tr><td>    </td></tr>
+    <tr><td>    </td></tr>
+    <tr><td>    </td></tr>
+
+
+
+
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+	
+ 
+
+<script src="./Social Network Analysis Course Page_files/d3.v3.min.js.download" charset="utf-8"></script>
+<script>
+
+var width = Math.max(800, innerWidth);
+    height = 200;
+
+var i = 0;
+
+var svg = d3.select("#d3object").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+svg.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .on("ontouchstart" in document ? "touchmove" : "mousemove", particle);
+
+function particle() {
+  var m = d3.mouse(this);
+
+  svg.insert("circle", "rect")
+      .attr("cx", m[0])
+      .attr("cy", m[1])
+      .attr("r", 1e-6)
+      .style("stroke", d3.hsl((i = (i + 1) % 360), 1, .5))
+      .style("stroke-opacity", 1)
+    .transition()
+      .duration(2000)
+      .ease(Math.sqrt)
+      .attr("r", 100)
+      .style("stroke-opacity", 1e-6)
+      .remove();
+
+  d3.event.preventDefault();
+}
+
+</script>
+</div></div></div></div></div></body></html>
